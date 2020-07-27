@@ -1,0 +1,18 @@
+.bar {
+  grid-area: n;   /* App.module.css */
+
+  position: sticky;
+  top: calc(var(--hh) + var(--mm));
+}
+
+.bar a:last-child {
+  margin-top: var(--mm);
+}
+
+@media only screen and (max-width: 750px) {
+  .bar {
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+  }
+}

@@ -1,0 +1,24 @@
+.wrapper {
+  grid-template-areas:
+    "m d"   /* u - DialogList.module.css */
+    "m ."   /* m - Messages.module.css */
+    "e ."   /* e - Editor.module.css   */
+  ;
+
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  grid-column-gap: var(--mm);
+}
+
+@media only screen and (max-width: 750px) {
+  .wrapper {
+    grid-template-areas:
+      "m"   /* m - Messages.module.css */
+      "e"   /* e - Editor.module.css   */
+    ;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+}

@@ -1,13 +1,64 @@
-body {
+html, body, p, h1, ul, li {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+input, textarea, button {
+  resize: none;
+  outline: none;
 }
+
+@font-face {
+  font-family: 'roboto';
+  src: url('./fonts/roboto.ttf') format('truetype');
+}
+
+body {
+  --m: 0.5rem;  /* half gap */
+  --mm: 1rem;   /* default gap */
+  --mmm: 2rem;  /* double gap */
+  --dm: -1rem;  /* reversed gap */
+
+  --rr: 5px;    /* default border radius */
+  --r: 3px;     /* small border radius */
+
+  --bh: 202px;  /* nav bar height */
+  --hh: 50px;   /* header height */
+
+  --of: minmax(0, auto);  /* отступы контента от края экрана */
+
+  --ff-normal: normal .9rem roboto, Arial, sans-serif;
+  --ff-large: normal 1.5rem roboto, Arial, sans-serif;
+  --ff-small: normal .7rem roboto, Arial, sans-serif;
+
+  --dark-red: #5C0909;
+  --red: #CF1818;
+
+  --dark-blue: #09405C;
+  --blue: #1891CF;
+
+  --gray: #D1D8DB;
+  --white: #FBFBFB;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: var(--gray);
+  font: var(--ff-normal);
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+body::-webkit-scrollbar-button {
+  height: var(--hh);
+  background-color: var(--dark-blue);
+}
+
+body::-webkit-scrollbar-button:vertical:increment {
+  display: none;
+}
+body::-webkit-scrollbar { width: 12px; }
+body::-webkit-scrollbar-track { background: var(--gray); }
+body::-webkit-scrollbar-thumb { border-radius: 2px; -webkit-box-shadow: inset 0 0 3px 1px var(--dark-blue); }
+

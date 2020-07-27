@@ -1,0 +1,11 @@
+.dialogs {
+  grid-area: d;   /* Dialogs.module.css */
+  position: sticky;
+  top: calc(var(--hh) + var(--mm));
+}
+
+@media only screen and (max-width: 750px) {
+  .dialogs {
+    display: none;
+  }
+}

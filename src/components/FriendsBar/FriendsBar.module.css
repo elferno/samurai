@@ -1,0 +1,19 @@
+.bar {
+  grid-area: f;   /* App.module.css */
+  color: var(--blue);
+
+  position: sticky;
+  top: calc(var(--bh) + var(--hh) + var(--mmm));
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+@media only screen and (max-width: 750px) {
+  .bar {
+    display: none;
+  }
+}

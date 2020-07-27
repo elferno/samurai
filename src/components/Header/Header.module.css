@@ -1,0 +1,51 @@
+.header {
+  grid-area: h;   /* App.module.css */
+  background-color: var(--dark-blue);
+
+  display: grid;
+  grid-template-columns: var(--of) minmax(0, 1000px) var(--of);
+  grid-template-rows: 100%;
+  grid-column-gap: var(--mm);
+
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.header:before, .header:after {
+  content: '';
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.wrapper img {
+  height: calc(100% - 1rem);
+  filter: saturate(30%);
+}
+
+.wrapper:after {
+  content: '';
+
+  width: 100%;
+  height: var(--mm);
+
+  display: block;
+
+  position: absolute;
+  bottom: var(--dm);
+  left: 0;
+
+  background-color: var(--gray);
+}
+
+
+
+@media only screen and (max-width: 750px) {
+  .header {
+    grid-template-columns: var(--of) 1fr var(--of);
+  }
+}

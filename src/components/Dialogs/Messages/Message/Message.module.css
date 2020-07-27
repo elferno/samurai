@@ -1,0 +1,7 @@
+.message {
+  padding-bottom: var(--mm);
+}
+
+.message:last-child {
+  padding-bottom: 0;
+}

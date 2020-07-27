@@ -1,0 +1,36 @@
+.post_create {
+  display: grid;
+
+  grid-template-areas:
+    't t'   /* t    - local */
+    'e b'   /* e, b - local */
+  ;
+
+  grid-template-columns: 1fr auto;
+  grid-row-gap: var(--mm);
+}
+
+.add_text {
+  grid-area: t;   /* local */
+
+  width: 100%;
+  height: 100px;
+
+  resize: vertical;
+  min-height: 100px;
+  max-height: 250px;
+}
+
+.add_error {
+  grid-area: e;   /* local */
+
+  font: var(--ff-normal);
+  color: var(--red);
+
+  box-sizing: border-box;
+  padding-bottom: 2px;
+}
+
+.add_button {
+  grid-area: b;   /* local */
+}
