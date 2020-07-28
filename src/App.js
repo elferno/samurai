@@ -9,17 +9,17 @@ import Profile from './components/Profile/Profile'
 
 import css from 'App.module.css'
 
-const App = ({store}) => {
+const App = () => {
 
   const content = {
     'profile': {
       path: '/profile',
-      render: () => <Profile store={store} />
+      render: () => <Profile/>
     },
 
     'dialogs': {
       path: '/dialogs',
-      render: () => <Dialogs store={store} />
+      render: () => <Dialogs/>
     },
 
     'news': {
@@ -41,7 +41,7 @@ const App = ({store}) => {
       <Header/>
       <NavBar/>
 
-      <FriendsBarContainer store={store}/>
+      <FriendsBarContainer/>
 
       <div className={css.content}>
         <Route {...content.profile} />

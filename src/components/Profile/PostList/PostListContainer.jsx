@@ -1,11 +1,12 @@
-import React from 'react'
+import { connect } from 'react-redux'
+
 import PostList from './PostList'
 
-const PostListContainer = ({ store }) => {
 
-  return <PostList
-           posts={store.getState().profile.posts}
-         />
-}
+const mapStateToProps = (state) => ({
+  posts: state.profile.posts
+})
+
+const PostListContainer = connect(mapStateToProps)(PostList)
 
 export default PostListContainer

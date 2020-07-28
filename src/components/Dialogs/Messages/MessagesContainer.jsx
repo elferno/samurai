@@ -1,21 +1,19 @@
-import React from 'react'
+import { connect } from 'react-redux'
+
 import Messages from './Messages'
 
-const MessagesContainer = ({ store }) => {
-
-  const messages = store.getState().dialogs.messages
-
-  const messagesBlockStyle = () => {
-    const screenH = window.innerHeight
-                    || document.element.clientHeight
-                    || document.body.clientHeight;
-    return { 'minHeight' : screenH - (50 + 132 + 16 * 3) }
-  }
-
-  return <Messages
-           messagesBlockStyle={messagesBlockStyle()}
-           messages={messages}
-         />
+const messagesBlockStyle = () => {
+  const screenH = window.innerHeight
+    || document.element.clientHeight
+    || document.body.clientHeight;
+  return { 'minHeight' : screenH - (50 + 132 + 16 * 3) }
 }
+
+const mapStateToProps = (state) => ({
+  messagesBlockStyle: messagesBlockStyle(),
+  messages: state.dialogs.messages
+})
+
+const MessagesContainer = connect(mapStateToProps)(Messages)
 
 export default MessagesContainer

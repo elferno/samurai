@@ -1,4 +1,5 @@
-import React from 'react'
+import { connect } from 'react-redux'
+
 import PostCreate from './PostCreate'
 
 import {
@@ -7,17 +8,16 @@ import {
 } from
     'redux/profile-reducer'
 
-const PostCreateContainer = ({ store }) => {
 
-  const newPostText = store.getState().profile.newPostText
-  const onAddPost = () => store.dispatch(addPostCreator())
-  const onSetNewPostText = (text) => store.dispatch(setNewPostTextCreator(text))
+const mapStateToProps = (state) => ({
+  newPostText: state.profile.newPostText
+})
 
-  return <PostCreate
-           newPostText={newPostText}
-           onAddPost={onAddPost}
-           onSetNewPostText={onSetNewPostText}
-         />
-}
+const mapDispatchToProps = (dispatch) => ({
+  onAddPost: () => dispatch(addPostCreator()),
+  onSetNewPostText: (text) => dispatch(setNewPostTextCreator(text))
+})
+
+const PostCreateContainer = connect(mapStateToProps, mapDispatchToProps)(PostCreate)
 
 export default PostCreateContainer

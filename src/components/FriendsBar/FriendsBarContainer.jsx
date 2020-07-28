@@ -1,15 +1,13 @@
-import React from 'react'
+import { connect } from 'react-redux'
+
 import FriendsBar from './FriendsBar'
 
-const FriendsBarContainer = ({ store }) => {
 
-  const friends = store.getState().friends.list
-  const maxFriendsShow = 9
+const mapStateToProps = (state) => ({
+  friends: state.friends.list,
+  maxFriendsShow: 9
+})
 
-  return <FriendsBar
-           friends={friends}
-           maxFriendsShow={maxFriendsShow}
-         />
-}
+const FriendsBarContainer = connect(mapStateToProps)(FriendsBar)
 
 export default FriendsBarContainer

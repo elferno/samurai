@@ -12,10 +12,13 @@ const initialState = {
   newPostText: ''
 }
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = (_state = initialState, action) => {
+
   switch (action.type) {
 
-    case actionTypes.ADD_POST:
+    case actionTypes.ADD_POST: {
+      const state = {..._state}
+      state.posts = [..._state.posts]
       state.posts.push({
         id: state.posts.length,
         likes: 0,
@@ -23,13 +26,16 @@ const profileReducer = (state = initialState, action) => {
       })
       state.newPostText = ''
       return state
+    }
 
-    case actionTypes.SET_NEW_POST_TEXT:
+    case actionTypes.SET_NEW_POST_TEXT: {
+      const state = {..._state}
       state.newPostText = action.text
       return state
+    }
 
     default:
-      return state
+      return _state
   }
 }
 

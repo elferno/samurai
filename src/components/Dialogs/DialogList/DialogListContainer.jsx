@@ -1,14 +1,12 @@
-import React from 'react'
+import { connect } from 'react-redux'
 
 import DialogList from './DialogList'
 
-const DialogListContainer = ({ store }) => {
 
-  const contacts = store.getState().dialogs.contacts
+const mapStateToProps = (state) => ({
+  contacts: state.dialogs.contacts
+})
 
-  return <DialogList
-           contacts={contacts}
-         />
-}
+const DialogListContainer = connect(mapStateToProps)(DialogList)
 
 export default DialogListContainer

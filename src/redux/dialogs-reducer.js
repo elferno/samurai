@@ -24,25 +24,32 @@ const initialState = {
   newMessageText: ''
 }
 
-const dialogsReducer = (state = initialState, action) => {
+const dialogsReducer = (_state = initialState, action) => {
+
   switch (action.type) {
 
-    case actionTypes.ADD_MESSAGE:
+    case actionTypes.ADD_MESSAGE: {
+      const state = {..._state}
+      state.posts = [..._state.messages]
+
       state.messages.push({
         id: state.messages.length,
         text: state.newMessageText
-               .split('\n')
-               .map((text, i) => <p key={i}>{text}</p>)
+          .split('\n')
+          .map((text, i) => <p key={i}>{text}</p>)
       })
       state.newMessageText = ''
       return state
+    }
 
-    case actionTypes.SET_NEW_MESSAGE_TEXT:
+    case actionTypes.SET_NEW_MESSAGE_TEXT: {
+      const state = {..._state}
       state.newMessageText = action.text
       return state
+    }
 
     default:
-      return state
+      return _state
   }
 }
 
