@@ -5,6 +5,7 @@ const actionTypes = {
   SET_NEW_MESSAGE_TEXT: 'SET-NEW-MESSAGE-TEXT'
 }
 
+// state.dialogs.
 const initialState = {
   messages: [
     {id: 0, text: 'message #0'},
@@ -24,41 +25,39 @@ const initialState = {
   newMessageText: ''
 }
 
-const dialogsReducer = (_state = initialState, action) => {
+const dialogsReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
-    case actionTypes.ADD_MESSAGE: {
-      const state = {..._state}
-      state.posts = [..._state.messages]
+    case actionTypes.ADD_MESSAGE:
+      return {
+        ...state,
+        messages: [...state.messages].concat({
+          id: state.messages.length,
+          text: state.newMessageText
+            .split('\n')
+            .map((text, i) => <p key={i}>{text}</p>)
+        }),
+        newMessageText: ''
+      }
 
-      state.messages.push({
-        id: state.messages.length,
-        text: state.newMessageText
-          .split('\n')
-          .map((text, i) => <p key={i}>{text}</p>)
-      })
-      state.newMessageText = ''
-      return state
-    }
-
-    case actionTypes.SET_NEW_MESSAGE_TEXT: {
-      const state = {..._state}
-      state.newMessageText = action.text
-      return state
-    }
+    case actionTypes.SET_NEW_MESSAGE_TEXT:
+      return {
+        ...state,
+        newMessageText: action.text
+      }
 
     default:
-      return _state
+      return state
   }
 }
 
-export const setNewMessageTextCreator = (text) => ({
+export const setNewMessageTextAC = (text) => ({
   type: actionTypes.SET_NEW_MESSAGE_TEXT,
   text
 })
 
-export const addMessageCreator = () => ({
+export const addMessageAC = () => ({
   type: actionTypes.ADD_MESSAGE
 })
 

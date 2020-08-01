@@ -10,7 +10,7 @@ input, textarea, button {
 
 @font-face {
   font-family: 'roboto';
-  src: url('./fonts/roboto.ttf') format('truetype');
+  src: url('assets/fonts/roboto.ttf') format('truetype');
 }
 
 body {
@@ -22,7 +22,7 @@ body {
   --rr: 5px;    /* default border radius */
   --r: 3px;     /* small border radius */
 
-  --bh: 202px;  /* nav bar height */
+  --bh: 252px;  /* nav bar height */
   --hh: 50px;   /* header height */
 
   --of: minmax(0, auto);  /* отступы контента от края экрана */

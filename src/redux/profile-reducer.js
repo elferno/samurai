@@ -3,6 +3,7 @@ const actionTypes = {
   SET_NEW_POST_TEXT: 'SET-NEW-POST-TEXT'
 }
 
+// state.profile.
 const initialState = {
   posts: [
     {id: 0, likes: 0, message: `Hey, sup?`},
@@ -12,39 +13,38 @@ const initialState = {
   newPostText: ''
 }
 
-const profileReducer = (_state = initialState, action) => {
+const profileReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
-    case actionTypes.ADD_POST: {
-      const state = {..._state}
-      state.posts = [..._state.posts]
-      state.posts.push({
-        id: state.posts.length,
-        likes: 0,
-        message: state.newPostText
-      })
-      state.newPostText = ''
-      return state
-    }
+    case actionTypes.ADD_POST:
+      return {
+        ...state,
+        posts: [...state.posts].concat({
+          id: state.posts.length,
+          likes: 0,
+          message: state.newPostText
+        }),
+        newPostText: ''
+      }
 
-    case actionTypes.SET_NEW_POST_TEXT: {
-      const state = {..._state}
-      state.newPostText = action.text
-      return state
-    }
+    case actionTypes.SET_NEW_POST_TEXT:
+      return {
+        ...state,
+        newPostText: action.text
+      }
 
     default:
-      return _state
+      return state
   }
 }
 
-export const setNewPostTextCreator = (text) => ({
+export const setNewPostTextAC = (text) => ({
   type: actionTypes.SET_NEW_POST_TEXT,
   text
 })
 
-export const addPostCreator = () => ({
+export const addPostAC = () => ({
   type: actionTypes.ADD_POST
 })
 

@@ -2,8 +2,8 @@ import { connect } from 'react-redux'
 
 import Editor from './Editor'
 import {
-  setNewMessageTextCreator,
-  addMessageCreator
+  setNewMessageTextAC,
+  addMessageAC
 }
 from
   'redux/dialogs-reducer'
@@ -13,8 +13,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onAddMessage: () => dispatch(addMessageCreator()),
-  onSetNewMessageText: (text) => dispatch(setNewMessageTextCreator(text))
+  onAddMessage: () => dispatch(addMessageAC()),
+  onSetNewMessageText: (text) => dispatch(setNewMessageTextAC(text))
 })
 
 const EditorContainer = connect(mapStateToProps, mapDispatchToProps)(Editor)

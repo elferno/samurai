@@ -6,6 +6,7 @@ import NavBar from './components/NavBar/NavBar'
 import FriendsBarContainer from './components/FriendsBar/FriendsBarContainer'
 import Dialogs from './components/Dialogs/Dialogs'
 import Profile from './components/Profile/Profile'
+import UsersContainer from './components/Users/UsersContainer'
 
 import css from 'App.module.css'
 
@@ -20,6 +21,11 @@ const App = () => {
     'dialogs': {
       path: '/dialogs',
       render: () => <Dialogs/>
+    },
+
+    'users': {
+      path: '/users',
+      render: () => <UsersContainer/>
     },
 
     'news': {
@@ -46,6 +52,7 @@ const App = () => {
       <div className={css.content}>
         <Route {...content.profile} />
         <Route {...content.dialogs} />
+        <Route {...content.users}   />
         <Route {...content.news}    />
         <Route {...content.music}   />
         <Route {...content.settings}/>

@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import PostCreate from './PostCreate'
 
 import {
-  setNewPostTextCreator,
-  addPostCreator
+  setNewPostTextAC,
+  addPostAC
 } from
     'redux/profile-reducer'
 
@@ -14,8 +14,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onAddPost: () => dispatch(addPostCreator()),
-  onSetNewPostText: (text) => dispatch(setNewPostTextCreator(text))
+  onAddPost: () => dispatch(addPostAC()),
+  onSetNewPostText: (text) => dispatch(setNewPostTextAC(text))
 })
 
 const PostCreateContainer = connect(mapStateToProps, mapDispatchToProps)(PostCreate)

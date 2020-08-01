@@ -5,8 +5,16 @@
   top: calc(var(--hh) + var(--mm));
 }
 
-.bar a:last-child {
+.bar a {
   margin-top: var(--mm);
+}
+
+.bar a:first-child {
+  margin-top: 0;
+}
+
+.bar .offset {
+  margin: var(--mmm) 0 0;
 }
 
 @media only screen and (max-width: 750px) {

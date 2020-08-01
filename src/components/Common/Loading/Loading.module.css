@@ -1,0 +1,80 @@
+.wrapper {
+  height: 152px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background-color: var(--dark-blue);
+  z-index: 0;
+  opacity: 1;
+  transform: translate(-12.5px, -12.5px);
+  animation-name: effect-3;
+  animation-duration: 5s, 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease, linear;
+}
+
+.wrapper::after,
+.wrapper::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -77px 0 0 -77px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid var(--dark-blue);
+  z-index: 2;
+  opacity: 1;
+}
+
+.wrapper::after {
+  animation-name: effect-3, effect-1;
+  animation-duration: 5s, 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease, linear;
+}
+
+.wrapper::before {
+  animation-name: effect-3, effect-2;
+  animation-duration: 5s, 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease, linear;
+}
+
+@keyframes effect-1 {
+  0% {
+    transform: perspective(1000px) rotate3d(1, 1, 1, 0deg)
+  }
+  100% {
+    transform: perspective(1000px) rotate3d(1, 1, 1, 360deg)
+  }
+}
+
+@keyframes effect-2 {
+  0% {
+    transform: perspective(1000px) rotate3d(1, -1, 1, 0deg)
+  }
+  100% {
+    transform: perspective(1000px) rotate3d(1, -1, 1, 360deg)
+  }
+}
+
+@keyframes effect-3 {
+  0%,
+  100% {
+    opacity: .2
+  }
+  25%,
+  75% {
+    opacity: .5
+  }
+}

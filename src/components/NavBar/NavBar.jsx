@@ -14,7 +14,10 @@ const NavBar = () => {
       <NavLink to='/dialogs'  {...act}>Dialogs</NavLink>
       <NavLink to='/news'     {...act}>News</NavLink>
       <NavLink to='/music'    {...act}>Music</NavLink>
-      <NavLink to='/settings' {...act}>Settings</NavLink>
+
+      <NavLink to='/users' className={css.offset} {...act}>Find user</NavLink>
+
+      <NavLink to='/settings' className={css.offset} {...act}>Settings</NavLink>
     </nav>
   )
 }

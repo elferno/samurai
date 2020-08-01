@@ -54,8 +54,6 @@ a {
   color: var(--dark-blue);
   text-decoration: none;
 
-  margin-bottom: var(--mm);
-
   position: relative;
   z-index: 1;
   background-color: var(--white);
@@ -69,10 +67,6 @@ a.active_link {
   cursor: default;
   color: var(--blue)!important;
   text-decoration: none!important;
-}
-
-a:last-child {
-  margin-bottom: 0;
 }
 
 .num_label {
@@ -156,6 +150,7 @@ textarea {
   width: auto;
   height: 40px;
 
+  display: inline-block;
   border: 0;
 
   box-sizing: border-box;
@@ -170,6 +165,9 @@ textarea {
   cursor: pointer;
 
   transition: opacity .1s ease-out;
+
+  user-select: none;
+  -moz-user-select: none;
 }
 
 .button:hover {
