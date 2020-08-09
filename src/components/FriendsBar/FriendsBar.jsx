@@ -6,9 +6,10 @@ import Friend from './Friend/Friend'
 import g_css from 'App.module.css'
 import l_css from './FriendsBar.module.css'
 
+const css = {...g_css, ...l_css}
+
 const FriendsBar = ({ friends, maxFriendsShow }) => {
 
-  const css = {...g_css, ...l_css}
   const friendList = friends
                       .slice(0, maxFriendsShow)
                       .map(friend => <Friend key={friend.id} {...friend}/>)

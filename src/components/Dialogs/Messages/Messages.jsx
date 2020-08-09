@@ -4,9 +4,10 @@ import Message from './Message/Message'
 import g_css from 'App.module.css'
 import l_css from './Messages.module.css'
 
+const css = {...g_css, ...l_css}
+
 const Messages = ({ messages, messagesBlockStyle }) => {
 
-  const css = {...g_css, ...l_css}
   const messageList = messages.map(message => <Message key={message.id} {...message}/>)
 
   return (

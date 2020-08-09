@@ -1,42 +1,84 @@
 import React from 'react'
+
+import noImageSRC from 'assets/images/no_avatar.png'
+
 import g_css from 'App.module.css'
 import l_css from './ProfileInfo.module.css'
 
-const ProfileInfo = () => {
-  const css = {...g_css, ...l_css}
+const css = {...g_css, ...l_css}
+
+const ProfileInfo = ({ dob, name, location, contacts, education, photos }) => {
+  return (
+    <>
+      <Banner src={photos.big} />
+
+      <div className={`${css.intro} ${css.block}`}>
+        <Avatar src={photos.small} />
+        <UserInfo
+          dob={dob}
+          name={name}
+          location={location}
+          contacts={contacts}
+          education={education}
+        />
+        <Statistics />
+      </div>
+    </>
+  )
+}
+
+const Banner = ({ src }) => {
+  if (src)
+    return <div
+      className={`${css.banner} ${css.block}`}
+      style={{'backgroundImage': `URL('${src}')`}}
+    />
+
+  return null
+}
+
+const Avatar = ({ src }) => {
+  return (
+    <div className={`${css.avatar} ${css.a_l} ${css.img_container}`}>
+      <img src={src || noImageSRC} alt='' />
+    </div>
+  )
+}
+
+const UserInfo = ({ dob, name, location, contacts, education }) => {
+
+  const webSite = contacts.website
+    ? <a
+        href={contacts.website}
+        target='_blank'
+        rel='noopener noreferrer'
+        className={`${css.inline_a} ${css.colored_a}`}
+      >
+        {contacts.website}
+      </a>
+    : 'none'
 
   return (
-    <React.Fragment>
-      {/* BANNER */}
-      <div className={`${css.banner} ${css.block}`} style={{backgroundImage: "URL('https://natureconservancy-h.assetsadobe.com/is/image/content/dam/tnc/nature/en/photos/Central_ID_River.jpg?crop=196,0,2607,1434&wid=4000&hei=2200&scl=0.6518181818181819')"}}/>
+    <div className={css.info}>
+      <h1 className={css.ff_header}>{name}</h1>
 
-      {/* INFO-BLOCK */}
-      <div className={`${css.intro} ${css.block}`}>
-
-        {/* AVATAR */}
-        <div className={css.avatar}>
-          <img alt='' src='https://cdn130.picsart.com/316823172046201.jpg?type=webp&to=min&r=640'/>
-        </div>
-
-        {/* NAME + INFO */}
-        <div className={css.info}>
-          <h1 className={css.ff_header}>Elijah I.</h1>
-
-          <div>
-            <p>Date of birth: 17.09.1986</p>
-            <p>City: Moscow</p>
-            <p>Education: none</p>
-            <p>Web-site: https://rlimb.com</p>
-          </div>
-        </div>
-
-        {/* STATISTICS */}
-        <div className={css.stats}>
-          <div style={{width: '100%', height: '100%'}} className={`${css.cc_inline}`}>статистика</div>
-        </div>
-
+      <div>
+        <p>Date of birth: {dob}</p>
+        <p>City: {location.city}</p>
+        <p>Education: {education || 'none'}</p>
+        <p> Web-site: {webSite}</p>
       </div>
-    </React.Fragment>
+    </div>
+  )
+}
+
+const Statistics = () => {
+  return (
+    <div className={css.stats}>
+      <div className={`${css.cc_inline} ${css.stats_container}`}>
+        статистика
+      </div>
+    </div>
   )
 }
 

@@ -3,15 +3,14 @@ import React from 'react'
 import g_css from 'App.module.css'
 import l_css from './PostCreate.module.css'
 
-const PostCreate = ({ newPostText, onAddPost, onSetNewPostText }) => {
+const css = {...g_css, ...l_css}
 
-  const css = {...g_css, ...l_css}
-
-  const addPost = {
+const PostCreate = ({ newPostText, addPost, setNewPostText }) => {
+  const localState = {
     textarea: {
       className: css.add_text,
       value: newPostText,
-      onChange: (e) => onSetNewPostText(e.target.value)
+      onChange: (e) => setNewPostText(e.target.value)
     },
 
     error: {
@@ -20,7 +19,7 @@ const PostCreate = ({ newPostText, onAddPost, onSetNewPostText }) => {
 
     button: {
       className: `${css.button} ${css.add_button}`,
-      onClick: onAddPost
+      onClick: addPost
     }
   }
 
@@ -29,9 +28,9 @@ const PostCreate = ({ newPostText, onAddPost, onSetNewPostText }) => {
       <div className={css.block_label}>CREATE NEW POST</div>
 
       <div className={css.post_create}>
-        <textarea {...addPost.textarea} />
-        <div {...addPost.error} />
-        <div {...addPost.button}>ADD POST</div>
+        <textarea {...localState.textarea} />
+        <div {...localState.error} />
+        <div {...localState.button}>ADD POST</div>
       </div>
     </div>
   )

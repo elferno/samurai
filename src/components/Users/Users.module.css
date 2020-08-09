@@ -1,3 +1,22 @@
-.upload_button {
-  margin: var(--mm) 0 var(--mm) 0;
+.content_wrapper {
+  height: 100%;
+  margin-bottom: var(--mm);
+}
+
+.upload_button, .loading_button {
+  margin-top: var(--mm);
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.loading_button {
+  min-width: 108px;
+  text-align: center;
+  background-color: var(--dark-gray);
+  cursor: default;
+}
+
+.loading_wrapper {
+  height: calc(100% - var(--mm));
 }

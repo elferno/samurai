@@ -1,7 +1,9 @@
-const actionTypes = {
-  ADD_POST: 'ADD-POST',
-  SET_NEW_POST_TEXT: 'SET-NEW-POST-TEXT'
-}
+const
+  ADD_POST = 'profile:ADD-POST',
+  RESET_PAGE = 'profile:RESET-PAGE',
+  SET_PROFILE = 'profile:SET-PROFILE',
+  SET_NEW_POST_TEXT = 'profile:SET-NEW-POST-TEXT'
+
 
 // state.profile.
 const initialState = {
@@ -10,6 +12,8 @@ const initialState = {
     {id: 1, likes: 23, message: `it's my first post`}
   ],
 
+  info: null,   // null -> page is loading, false -> no user, [...] -> user info
+
   newPostText: ''
 }
 
@@ -17,7 +21,7 @@ const profileReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
-    case actionTypes.ADD_POST:
+    case ADD_POST:
       return {
         ...state,
         posts: [...state.posts].concat({
@@ -28,7 +32,18 @@ const profileReducer = (state = initialState, action) => {
         newPostText: ''
       }
 
-    case actionTypes.SET_NEW_POST_TEXT:
+    case SET_PROFILE:
+      return {
+        ...state,
+        info: action.info
+      }
+
+    case RESET_PAGE:
+      return {
+        ...initialState
+      }
+
+    case SET_NEW_POST_TEXT:
       return {
         ...state,
         newPostText: action.text
@@ -39,13 +54,23 @@ const profileReducer = (state = initialState, action) => {
   }
 }
 
-export const setNewPostTextAC = (text) => ({
-  type: actionTypes.SET_NEW_POST_TEXT,
+export const setNewPostText = (text) => ({
+  type: SET_NEW_POST_TEXT,
   text
 })
 
-export const addPostAC = () => ({
-  type: actionTypes.ADD_POST
+export const addPost = () => ({
+  type: ADD_POST
 })
+
+export const resetPage = () => ({
+  type: RESET_PAGE
+})
+
+export const setProfile = (info) => ({
+  type: SET_PROFILE,
+  info
+})
+
 
 export default profileReducer

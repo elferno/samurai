@@ -1,9 +1,9 @@
 import React from 'react'
 
-const actionTypes = {
-  ADD_MESSAGE: 'ADD-MESSAGE',
-  SET_NEW_MESSAGE_TEXT: 'SET-NEW-MESSAGE-TEXT'
-}
+const
+  ADD_MESSAGE = 'dialogs:ADD-MESSAGE',
+  SET_NEW_MESSAGE_TEXT = 'dialogs:SET-NEW-MESSAGE-TEXT'
+
 
 // state.dialogs.
 const initialState = {
@@ -29,7 +29,7 @@ const dialogsReducer = (state = initialState, action) => {
 
   switch (action.type) {
 
-    case actionTypes.ADD_MESSAGE:
+    case ADD_MESSAGE:
       return {
         ...state,
         messages: [...state.messages].concat({
@@ -41,7 +41,7 @@ const dialogsReducer = (state = initialState, action) => {
         newMessageText: ''
       }
 
-    case actionTypes.SET_NEW_MESSAGE_TEXT:
+    case SET_NEW_MESSAGE_TEXT:
       return {
         ...state,
         newMessageText: action.text
@@ -52,13 +52,13 @@ const dialogsReducer = (state = initialState, action) => {
   }
 }
 
-export const setNewMessageTextAC = (text) => ({
-  type: actionTypes.SET_NEW_MESSAGE_TEXT,
+export const setNewMessageText = (text) => ({
+  type: SET_NEW_MESSAGE_TEXT,
   text
 })
 
-export const addMessageAC = () => ({
-  type: actionTypes.ADD_MESSAGE
+export const addMessage = () => ({
+  type: ADD_MESSAGE
 })
 
 export default dialogsReducer

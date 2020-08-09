@@ -1,20 +1,22 @@
 import React from 'react'
+
 import ProfileInfo from './ProfileInfo/ProfileInfo'
-import PostCreateContainer from './PostCreate/PostCreateContainer'
-import PostListContainer from './PostList/PostListContainer'
+import PostCreate from './PostCreate/PostCreate'
+import PostList from './PostList/PostList'
 
-// import g_css from 'App.module.css'
-// import l_css from './Profile.module.css'
-
-const Profile = () => {
-  // const css = {...g_css, ...l_css}
-
+const Profile = ({ state, addPost, setNewPostText }) => {
   return (
-    <React.Fragment>
-      <ProfileInfo/>
-      <PostCreateContainer/>
-      <PostListContainer/>
-    </React.Fragment>
+    <>
+      <ProfileInfo {...state.info} />
+
+      <PostCreate
+        addPost={addPost}
+        setNewPostText={setNewPostText}
+        newPostText={state.newPostText}
+      />
+
+      <PostList posts={state.posts} />
+    </>
   )
 }
 

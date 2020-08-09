@@ -9,8 +9,13 @@ input, textarea, button {
 }
 
 @font-face {
-  font-family: 'roboto';
-  src: url('assets/fonts/roboto.ttf') format('truetype');
+  font-display: fallback;
+  font-family: 'Roboto';
+  src: url('assets/fonts/roboto.woff') format('woff');
+}
+
+html {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 body {
@@ -27,9 +32,13 @@ body {
 
   --of: minmax(0, auto);  /* отступы контента от края экрана */
 
-  --ff-normal: normal .9rem roboto, Arial, sans-serif;
-  --ff-large: normal 1.5rem roboto, Arial, sans-serif;
-  --ff-small: normal .7rem roboto, Arial, sans-serif;
+  --ff-normal: normal .9rem Roboto, Impact, sans-serif;
+  --ff-large: normal 1.5rem Roboto, Impact, sans-serif;
+  --ff-small: normal .7rem Roboto, Impact, sans-serif;
+
+  --avatar-s: 45px;
+  --avatar-m: 60px;
+  --avatar-l: 150px;
 
   --dark-red: #5C0909;
   --red: #CF1818;
@@ -38,6 +47,8 @@ body {
   --blue: #1891CF;
 
   --gray: #D1D8DB;
+  --dark-gray: #B0B6B9;
+
   --white: #FBFBFB;
 
   -webkit-font-smoothing: antialiased;

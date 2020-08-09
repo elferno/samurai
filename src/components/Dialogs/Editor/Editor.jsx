@@ -3,27 +3,26 @@ import React from 'react'
 import g_css from 'App.module.css'
 import l_css from './Editor.module.css'
 
-const Editor = ({ newMessageText, onAddMessage, onSetNewMessageText }) => {
+const css = {...g_css, ...l_css}
 
-  const css = {...g_css, ...l_css}
-
+const Editor = ({ newMessageText, addMessage, setNewMessageText }) => {
   const newMessage = {
     textarea: {
       className: css.add_text,
       value: newMessageText,
-      onChange: (e) => onSetNewMessageText(e.target.value)
+      onChange: (e) => setNewMessageText(e.target.value)
     },
 
     button: {
       className: `${css.button} ${css.add_button}`,
-      onClick: onAddMessage
+      onClick: addMessage
     }
   }
 
   return (
     <div className={`${css.block} ${css.editor}`}>
       <textarea {...newMessage.textarea} />
-      <div {...newMessage.button}>SEND MESSAGE</div>
+      <div {...newMessage.button}>SEND<span> MESSAGE</span></div>
     </div>
   )
 }

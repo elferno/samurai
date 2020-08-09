@@ -1,59 +1,56 @@
-import React, {Fragment} from 'react'
-import axios from 'axios'
+import React from 'react'
 
 import User from './User/User'
-import Loading from 'components/Common/Loading/Loading'
 
 import g_css from 'App.module.css'
 import l_css from './Users.module.css'
 
+const css = {...g_css, ...l_css}
 
-class Users extends React.Component {
+const Users = ({ page, users, limit, isLoading, totalUsers, setPageToNext, toggleFollow }) => {
 
-  componentDidMount() {
-    axios
-      .get('https://powernet.su/api/users.php')
-      .then(response => this.props.onReadUsers(response.data.items || [null]))
-  }
+  const canUploadMore = (page * limit + limit) < totalUsers
 
-  componentWillUnmount() {
-    this.props.onDropUsers()
-  }
+  const localState = {
+    button: {
+      loading: totalUsers !== 0 && isLoading,
+      active : totalUsers !== 0 && !isLoading && canUploadMore,
+      setPageToNext
+    },
 
-  render() {
-
-    const css = {...g_css, ...l_css}
-    const users = this.props.users
-
-    const userList = () => {
-      return (
-        <Fragment>
-          { users
-            .map(user => <User
-              key={user.id}
-              onToggleFollow={this.props.onToggleFollow}
-              {...user}
-            />)
-          }
-          <div
-            className={`${css.button} ${css.upload_button}`}
-            onClick={this.props.onUpload}
-          >
-            UPLOAD MORE
-          </div>
-        </Fragment>
-      )
+    userList: {
+      toggleFollow,
+      totalUsers,
+      users
     }
-
-    return (
-      !users.length
-        ? <div className={css.block}><Loading /></div>
-        : users[0] === null
-          ? <div className={css.block}>no users found</div>
-          : userList(users)
-    )
   }
 
+  return (
+    <div className={css.content_wrapper}>
+      <UserList {...localState.userList} />
+      <UploadButton {...localState.button} />
+    </div>
+  )
+}
+
+const UserList = ({ users, totalUsers, toggleFollow }) => {
+  if (totalUsers) {
+    return users.map(user => <User key={user.id} toggleFollow={toggleFollow} {...user} />)
+  }
+
+  return null
+}
+
+const UploadButton = ({ loading, active, setPageToNext }) => {
+  if (loading) {
+    return <div className={`${css.button} ${css.loading_button}`}>LOADING...</div>
+  }
+
+  if (active) {
+    return <div className={`${css.button} ${css.upload_button}`} onClick={setPageToNext}>UPLOAD MORE</div>
+  }
+
+  return null
 }
 
 export default Users

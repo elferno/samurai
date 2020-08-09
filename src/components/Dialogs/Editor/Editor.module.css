@@ -53,3 +53,9 @@
 .add_button {
   align-self: end;
 }
+
+@media only screen and (max-width: 750px) {
+  .add_button span {
+    display: none;
+  }
+}

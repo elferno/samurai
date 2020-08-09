@@ -41,11 +41,3 @@
 
   background-color: var(--gray);
 }
-
-
-
-@media only screen and (max-width: 750px) {
-  .header {
-    grid-template-columns: var(--of) 1fr var(--of);
-  }
-}
