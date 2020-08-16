@@ -5,8 +5,7 @@ import FriendsBar from './FriendsBar'
 
 const mapStateToProps = (state) => ({
   friends: state.friends.list,
-  maxFriendsShow: 9,
-  auth: state.auth
+  maxFriendsShow: 9
 })
 
 const FriendsBarContainer = connect(mapStateToProps)(FriendsBar)

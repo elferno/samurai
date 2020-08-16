@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import LoginBlockContainer from 'components/Common/LoginBlock/LoginBlockContainer'
+import LoginBlock from 'components/Common/LoginBlock/LoginBlock'
 import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 
 import g_css from 'App.module.css'
@@ -10,13 +10,13 @@ import l_css from './NavBar.module.css'
 const css = {...g_css, ...l_css}
 const act = {'activeClassName': css.active_link}
 
-const NavBar = ({ auth }) => {
+const NavBar = ({ auth, login }) => {
   return (
     <nav className={`${css.bar} ${css.block} ${css.default_a} ${css.cc}`}>
       <PreloadContent
         isLoading={auth.userID === null || auth.fetching}
         noContent={auth.userID === false}
-        noContentFiller={<LoginBlockContainer/>}
+        noContentFiller={<LoginBlock login={login} />}
         clearContent={true}
       >
         <div className={css.container}>

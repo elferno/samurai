@@ -17,7 +17,7 @@
   transform: translate(-12.5px, -12.5px);
   animation-name: effect-3;
   animation-duration: 5s, 2s;
-  animation-delay: .5s;
+  animation-delay: .3s;
   animation-iteration-count: infinite;
   animation-timing-function: ease, linear;
 }
@@ -40,7 +40,7 @@
 .wrapper::after {
   animation-name: effect-3, effect-1;
   animation-duration: 5s, 2s;
-  animation-delay: .5s;
+  animation-delay: .3s;
   animation-iteration-count: infinite;
   animation-timing-function: ease, linear;
 }
@@ -48,7 +48,7 @@
 .wrapper::before {
   animation-name: effect-3, effect-2;
   animation-duration: 5s, 2s;
-  animation-delay: .5s;
+  animation-delay: .3s;
   animation-iteration-count: infinite;
   animation-timing-function: ease, linear;
 }

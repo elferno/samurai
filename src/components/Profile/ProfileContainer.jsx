@@ -25,9 +25,11 @@ class ProfileAPI extends React.Component {
     return this.props.match.params.id || 'own'
   }
 
+  get isOwnPage() {
+    return this.url_id === 'own'
+  }
   setProfile() {
     this.props.setCurrentId(this.url_id)
-
     axios
       .get(
         `https://fishup.fun/api/profile.php?id=${this.url_id}`,
@@ -40,9 +42,7 @@ class ProfileAPI extends React.Component {
   }
 
   componentDidMount() {
-    // prevent unnecessary axios request BEFORE authorization has been checked
-    if (this.props.auth.userID)
-      this.setProfile()
+    this.setProfile()
   }
 
   componentWillUnmount() {
@@ -51,18 +51,26 @@ class ProfileAPI extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    let reset = false
+
     // when URL change : profile/0 -> profile/1
     if (
       this.props.state.currentID !== null &&
       this.props.state.currentID !== this.url_id
-    ) {
+    )
+      reset = true
+
+    // when login/logout (only for own page)
+    if (
+      this.isOwnPage &&
+      prevProps.auth.userID !== this.props.auth.userID
+    )
+      reset = true
+
+    if (reset) {
       this.props.resetPage()
       this.setProfile()
     }
-
-    // when login/logout
-    if (prevProps.auth.userID !== this.props.auth.userID)
-      this.setProfile()
   }
 
   render() {
@@ -72,14 +80,14 @@ class ProfileAPI extends React.Component {
       setNewPostText
     } = this.props
 
-    const ownPage_authFetching = (this.props.auth.fetching && this.url_id === 'own')
-    const ownPage_noAuth = (!this.props.auth.userID && this.url_id === 'own')
+    const ownPage_authFetching = (this.props.auth.fetching && this.isOwnPage)
+    const ownPage_noAuth = (!this.props.auth.userID && this.isOwnPage)
 
     return (
       <PreloadContent
         isLoading={state.info === null  || ownPage_authFetching}
         noContent={state.info === false || ownPage_noAuth}
-        noContentFiller={<Error404/>}
+        noContentFiller={<Error404 />}
       >
         <Profile
           state={state}
@@ -92,8 +100,7 @@ class ProfileAPI extends React.Component {
 }
 
 const ProfileContainer = connect((state) => ({
-  state: state.profile,
-  auth: state.auth
+  state: state.profile
 }), {
   addPost,
   resetPage,
@@ -101,6 +108,6 @@ const ProfileContainer = connect((state) => ({
   setCurrentId,
   setNewPostText
 })
-(withRouter(ProfileAPI))
+  (withRouter(ProfileAPI))
 
 export default ProfileContainer
