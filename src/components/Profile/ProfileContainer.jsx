@@ -40,7 +40,9 @@ class ProfileAPI extends React.Component {
   }
 
   componentDidMount() {
-    this.setProfile()
+    // prevent unnecessary axios request BEFORE authorization has been checked
+    if (this.props.auth.userID)
+      this.setProfile()
   }
 
   componentWillUnmount() {
@@ -49,6 +51,7 @@ class ProfileAPI extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    // when URL change : profile/0 -> profile/1
     if (
       this.props.state.currentID !== null &&
       this.props.state.currentID !== this.url_id
@@ -56,21 +59,26 @@ class ProfileAPI extends React.Component {
       this.props.resetPage()
       this.setProfile()
     }
+
+    // when login/logout
+    if (prevProps.auth.userID !== this.props.auth.userID)
+      this.setProfile()
   }
 
   render() {
-
     const {
-      auth,
       state,
       addPost,
       setNewPostText
     } = this.props
 
+    const ownPage_authFetching = (this.props.auth.fetching && this.url_id === 'own')
+    const ownPage_noAuth = (!this.props.auth.userID && this.url_id === 'own')
+
     return (
       <PreloadContent
-        isLoading={state.info === null  || auth.fetching}
-        noContent={state.info === false || auth.userID === false}
+        isLoading={state.info === null  || ownPage_authFetching}
+        noContent={state.info === false || ownPage_noAuth}
         noContentFiller={<Error404/>}
       >
         <Profile

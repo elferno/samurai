@@ -44,14 +44,14 @@ function userReducer(state = initialState, action) {
     case SET_USERS:
       return {
         ...state,
-        users: Object.values(action.users),
+        users: action.users,
         totalUsers: action.totalUsers
       }
 
     case UPDATE_USERS:
       return {
         ...state,
-        users: [...state.users].concat(Object.values(action.users))
+        users: [...state.users].concat(action.users)
       }
 
     case TOGGLE_IS_LOADING:
@@ -81,12 +81,12 @@ export const resetPage = () => ({
 export const setUsers = (users, totalUsers) => ({
   type: SET_USERS,
   totalUsers,
-  users
+  users: Object.values(users)
 })
 
 export const updateUsers = (users) => ({
   type: UPDATE_USERS,
-  users
+  users: Object.values(users)
 })
 
 
