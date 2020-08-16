@@ -27,7 +27,7 @@ body {
   --rr: 5px;    /* default border radius */
   --r: 3px;     /* small border radius */
 
-  --bh: 252px;  /* nav bar height */
+  --bh: 205px;  /* nav bar height */
   --hh: 50px;   /* header height */
 
   --of: minmax(0, auto);  /* отступы контента от края экрана */
@@ -36,6 +36,7 @@ body {
   --ff-large: normal 1.5rem Roboto, Impact, sans-serif;
   --ff-small: normal .7rem Roboto, Impact, sans-serif;
 
+  --avatar-z: 34px;
   --avatar-s: 45px;
   --avatar-m: 60px;
   --avatar-l: 150px;

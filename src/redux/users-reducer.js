@@ -14,7 +14,7 @@ const initialState = {
   page: 0,           // last uploaded users page
   limit: 4,          // users per 1 upload
   totalUsers: 0,     // total users on server
-  isLoading: false   // догрузка пользователей
+  isLoading: false   // идет догрузка пользователей
 }
 
 function userReducer(state = initialState, action) {
@@ -44,14 +44,14 @@ function userReducer(state = initialState, action) {
     case SET_USERS:
       return {
         ...state,
-        users: action.users,
+        users: Object.values(action.users),
         totalUsers: action.totalUsers
       }
 
     case UPDATE_USERS:
       return {
         ...state,
-        users: [...state.users].concat(action.users)
+        users: [...state.users].concat(Object.values(action.users))
       }
 
     case TOGGLE_IS_LOADING:

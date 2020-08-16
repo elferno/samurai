@@ -8,11 +8,14 @@ import l_css from './FriendsBar.module.css'
 
 const css = {...g_css, ...l_css}
 
-const FriendsBar = ({ friends, maxFriendsShow }) => {
+const FriendsBar = ({ auth, friends, maxFriendsShow }) => {
 
   const friendList = friends
                       .slice(0, maxFriendsShow)
                       .map(friend => <Friend key={friend.id} {...friend}/>)
+
+  if ( !auth.userID )
+    return null
 
   return (
     <aside className={`${css.bar} ${css.block}`}>

@@ -2,6 +2,7 @@ const
   ADD_POST = 'profile:ADD-POST',
   RESET_PAGE = 'profile:RESET-PAGE',
   SET_PROFILE = 'profile:SET-PROFILE',
+  SET_CURRENT_ID = 'profile:SET-CURRENT-ID',
   SET_NEW_POST_TEXT = 'profile:SET-NEW-POST-TEXT'
 
 
@@ -12,7 +13,11 @@ const initialState = {
     {id: 1, likes: 23, message: `it's my first post`}
   ],
 
-  info: null,   // null -> page is loading, false -> no user, [...] -> user info
+  info: null,             // null -> page is loading, false -> no user, [...] -> user info
+  currentID: null,        // хранит ID показываемого профайла,
+                          // чтобы менять содержимое страницы, если он вдруг изменится
+                          // типа URL то при этом меняется, но вот <Route просто
+                          // переиспользует созданный ранее инстанс класса ProfileContainer
 
   newPostText: ''
 }
@@ -36,6 +41,12 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         info: action.info
+      }
+
+    case SET_CURRENT_ID:
+      return {
+        ...state,
+        currentID: action.id
       }
 
     case RESET_PAGE:
@@ -70,6 +81,11 @@ export const resetPage = () => ({
 export const setProfile = (info) => ({
   type: SET_PROFILE,
   info
+})
+
+export const setCurrentId = (id) => ({
+  type: SET_CURRENT_ID,
+  id
 })
 
 

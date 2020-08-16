@@ -1,0 +1,40 @@
+.user_menu {
+  height: 100%;
+
+  position: absolute;
+  right: 0;
+
+  display: flex;
+  align-items: center;
+}
+
+.user_menu a {
+  opacity: .75;
+  color: var(--white);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.user_menu a:hover {
+  opacity: 1;
+}
+
+.user_menu a:after {
+  display: none;
+}
+
+.user_menu div[role=img] a {
+  border-radius: 50%;
+  opacity: 1;
+}
+
+.user_menu div[role=img] {
+  margin-left: var(--mm);
+  margin-right: var(--mm);
+}
+
+.logout {
+  font: bold 16px Verdana, sans-serif;
+  position: relative;
+  top: -1px;
+}

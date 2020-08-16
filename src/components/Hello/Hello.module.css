@@ -1,0 +1,9 @@
+.hello {
+  height: calc(100% - var(--mm));
+  flex-direction: column;
+  text-align: center;
+}
+
+.hello p {
+  margin-top: var(--mmm);
+}

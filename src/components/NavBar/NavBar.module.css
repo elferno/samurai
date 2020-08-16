@@ -1,12 +1,19 @@
 .bar {
   grid-area: n;   /* App.module.css */
-
   position: sticky;
   top: calc(var(--hh) + var(--mm));
 }
 
 .bar .offset {
   margin: var(--mmm) 0 0;
+}
+
+.bar div[role=img] {
+  transform: scale(.5, .5);
+}
+
+.container {
+  width: 100%;
 }
 
 @media only screen and (max-width: 750px) {

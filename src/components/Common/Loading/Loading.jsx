@@ -15,7 +15,7 @@ const Loading = () => {
 
 export const LoadingIcon = () => {
   return (
-    <div className={css.wrapper}>
+    <div role='img' className={css.wrapper}>
       <div className={css.dot} />
     </div>
   )

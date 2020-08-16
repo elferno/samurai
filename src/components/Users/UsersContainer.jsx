@@ -16,9 +16,13 @@ import {
     'redux/users-reducer'
 
 class UsersAPI extends React.Component {
+  constructor(props) {
+    super(props)
+    this.alive = true
+  }
 
   get requestURL() {
-    return `https://powernet.su/api/users.php?
+    return `https://fishup.fun/api/users.php?
           page=${this.props.page}
           &limit=${this.props.limit}`
   }
@@ -27,7 +31,8 @@ class UsersAPI extends React.Component {
     axios
       .get(this.requestURL)
       .then(response => {
-        this.props.setUsers(response.data.users, response.data.totalUsers)
+        if (this.alive)
+          this.props.setUsers(response.data.users, response.data.totalUsers)
       })
   }
 
@@ -37,8 +42,10 @@ class UsersAPI extends React.Component {
     axios
       .get(this.requestURL)
       .then(response => {
-        this.props.updateUsers(response.data.users)
-        this.props.toggleIsLoading()
+        if (this.alive) {
+          this.props.updateUsers(response.data.users)
+          this.props.toggleIsLoading()
+        }
       })
   }
 
@@ -47,6 +54,7 @@ class UsersAPI extends React.Component {
   }
 
   componentWillUnmount() {
+    this.alive = false
     this.props.resetPage()
   }
 

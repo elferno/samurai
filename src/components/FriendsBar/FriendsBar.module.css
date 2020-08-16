@@ -3,7 +3,7 @@
   color: var(--blue);
 
   position: sticky;
-  top: calc(var(--bh) + var(--hh) + var(--mmm));
+  top: calc(var(--bh) + var(--hh) + var(--mmm) + var(--mm) + 50px);
 }
 
 .wrapper {

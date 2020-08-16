@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-import noImageSRC from 'assets/images/no_avatar.png'
+import Avatar from 'components/Common/Avatar/Avatar'
 
 import g_css from 'App.module.css'
 import l_css from './User.module.css'
@@ -17,19 +17,9 @@ const clickHandler = (e, callBack = false, ...param) => {
 const User = ({id, name, location, status, followed, photos, toggleFollow}) => {
   return (
     <div className={`${css.block} ${css.user}`}>
-      <Avatar id={id} src={photos.small} />
+      <Avatar id={id} havePH={photos.small} size={'medium'} />
       <UserInfo id={id} name={name} location={location} status={status} />
       <UserSettings id={id} followed={followed} toggleFollow={toggleFollow} />
-    </div>
-  )
-}
-
-const Avatar = ({ id, src }) => {
-  return (
-    <div className={`${css.avatar} ${css.a_m} ${css.user_img_container}`}>
-      <NavLink to={`/profile/${id}`}>
-        <img src={src || noImageSRC} alt='' />
-      </NavLink>
     </div>
   )
 }
@@ -38,7 +28,7 @@ const UserInfo = ({ id, name, location, status }) => {
   return(
     <div className={css.user_info_container}>
       <NavLink to={`/profile/${id}`}>
-        <b>{name}</b>
+        <b>{name}{id}</b>
       </NavLink>
       <u>{location.country} : {location.city}</u>
       <p>{status || <i className={css.no_status}>no status</i>}</p>

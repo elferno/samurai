@@ -1,20 +1,28 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
-import Header from './components/Header/Header'
-import NavBar from './components/NavBar/NavBar'
+import HeaderContainer from './components/Header/HeaderContainer'
+import NavBarContainer from './components/NavBar/NavBarContainer'
 import FriendsBarContainer from './components/FriendsBar/FriendsBarContainer'
-import Dialogs from './components/Dialogs/Dialogs'
 import ProfileContainer from './components/Profile/ProfileContainer'
 import UsersContainer from './components/Users/UsersContainer'
+import Hello from './components/Hello/Hello'
+import Dialogs from './components/Dialogs/Dialogs'
+import UsersSearch from './components/UsersSearch/UsersSearch'
 
 import css from 'App.module.css'
 
 const App = () => {
 
   const content = {
+    'hello': {
+      path: '/',
+      exact: true,
+      render: () => <Hello/>
+    },
+
     'profile': {
-      path: '/profile',
+      path: '/profile/:id?',
       render: () => <ProfileContainer/>
     },
 
@@ -44,17 +52,19 @@ const App = () => {
   return (
 
     <div className={css.wrapper}>
-      <Header/>
-      <NavBar/>
+      <HeaderContainer/>
+      <NavBarContainer/>
+      <UsersSearch/>
 
       <FriendsBarContainer/>
 
       <div className={css.content}>
+        <Route {...content.hello} />
         <Route {...content.profile} />
         <Route {...content.dialogs} />
-        <Route {...content.users}   />
-        <Route {...content.news}    />
-        <Route {...content.music}   />
+        <Route {...content.users} />
+        <Route {...content.news} />
+        <Route {...content.music} />
         <Route {...content.settings}/>
       </div>
     </div>

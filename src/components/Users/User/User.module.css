@@ -5,7 +5,7 @@
 
 
 
-.user_img_container {
+.user div[role=img] {
   display: inline-block;
   cursor: pointer;
 
@@ -13,11 +13,11 @@
   border-radius: 50%;
 }
 
-.user_img_container a {
+.user div[role=img] a {
   all: unset;
 }
 
-.user_img_container:hover + .user_info_container a {
+.user div[role=img]:hover + .user_info_container a {
   color: var(--blue);
 }
 
