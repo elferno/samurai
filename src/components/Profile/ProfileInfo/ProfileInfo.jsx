@@ -14,7 +14,7 @@ const css = {...g_css, ...l_css}
  * @param photos.small {string}
 */
 
-const ProfileInfo = ({ id, dob, name, location, contacts, education, photos }) => {
+const ProfileInfo = ({ id, dob, name, location, website, education, photos }) => {
   return (
     <>
       <Banner id={id} haveBN={photos.large} />
@@ -24,8 +24,8 @@ const ProfileInfo = ({ id, dob, name, location, contacts, education, photos }) =
         <UserInfo
           dob={dob}
           name={name}
+          website={website}
           location={location}
-          contacts={contacts}
           education={education}
         />
         <Statistics />
@@ -34,11 +34,11 @@ const ProfileInfo = ({ id, dob, name, location, contacts, education, photos }) =
   )
 }
 
-const UserInfo = ({ dob, name, location, contacts, education }) => {
+const UserInfo = ({ dob, name, location, website, education }) => {
 
-  const webSite = contacts.website
+  const webSite = website
     ? <a
-        href={contacts.website}
+        href={website}
         target='_blank'
         rel='noopener noreferrer'
         className={`${css.inline_a} ${css.colored_a}`}

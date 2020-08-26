@@ -1,6 +1,27 @@
 .friend {
+  width: 100%;
+  max-width: 30%;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  margin-left: 5%;
+}
+
+.friend:nth-child(n + 4) {
+  margin-top: var(--mm);
+}
+
+.friend:nth-child(1), .friend:nth-child(3n + 4) {
+  margin-left: 0;
+}
+
+.friend a {
+  width: 100%;
+  overflow: hidden;
   text-align: center;
-  margin-bottom: 0;
   font: var(--ff-small);
 }
 
@@ -9,4 +30,6 @@
   font-weight: normal;
   text-overflow: ellipsis;
   overflow: hidden;
+
+  margin-top: calc(var(--mm) / 3);
 }

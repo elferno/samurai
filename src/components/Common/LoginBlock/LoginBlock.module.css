@@ -1,3 +1,5 @@
-.container {
-  background: red;
+.accept_error {
+  width: 50%;
+  text-align: center;
+  margin-top: var(--mm);
 }

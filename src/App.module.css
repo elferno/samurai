@@ -33,10 +33,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
 .cc_inline {
   display: inline-flex;
+}
+
+.cc_column {
+  flex-direction: column;
 }
 /* * */
 
@@ -97,6 +102,21 @@ a.colored_a:hover {
 }
 
 .num_label {
+  position: relative;
+  margin-top: var(--mm);
+}
+
+.num_label:first-child {
+  margin-top: 0;
+}
+
+.num_label a {
+  display: inline;
+  float: none;
+  clear: none;
+}
+
+.num_label div {
   width: 100%;
 
   font: var(--ff-normal);
@@ -107,10 +127,11 @@ a.colored_a:hover {
   height: var(--mm);
 
   position: absolute;
+  top: 0;
   z-index: 0;
 }
 
-.num_label:after {
+.num_label div:after {
   content: '';
 
   width: 100%;
@@ -125,7 +146,7 @@ a.colored_a:hover {
   border-bottom: 1px dotted var(--gray);
 }
 
-.num_label b {
+.num_label div b {
   display: inline-block;
   font-weight: normal;
 
@@ -135,7 +156,7 @@ a.colored_a:hover {
   z-index: 1;
 }
 
-a:after, .num_label b:after {
+a:after, .num_label div b:after {
   content: '';
 
   width: 5px;
@@ -150,7 +171,7 @@ a:after, .num_label b:after {
   background-color: var(--white);
 }
 
-.num_label b:after {
+.num_label div b:after {
   right: auto;
   left: -5px;
 }
@@ -179,7 +200,7 @@ textarea {
 /* button */
 .button {
   width: auto;
-  height: 40px;
+  height: var(--button-h);
 
   display: inline-block;
   border: 0;
@@ -269,6 +290,121 @@ textarea {
 
 
 
+/* input=text */
+.input_text {
+  width: 100%;
+  height: var(--button-h);
+
+  margin-top: var(--mm);
+
+  position: relative;
+}
+
+.input_text:first-child {
+  margin-top: 0;
+}
+
+.input_text input {
+  width: 100%;
+  height: 100%;
+
+  box-sizing: border-box;
+  border: 1px solid var(--dark-blue);
+  border-radius: var(--rr);
+
+  background: transparent;
+
+  font: var(--ff-normal);
+  color: var(--dark-blue);
+
+  padding: 10px 0 0 10px;
+
+  position: relative;
+  z-index: 2;
+}
+
+.input_text label {
+  position: absolute;
+  left: 11px;
+  top: 10px;
+  z-index: 1;
+
+  font: var(--ff-normal);
+  color: var(--dark-gray);
+
+  transition: all .1s ease-out;
+}
+
+.input_text input:focus + label, .filled + label {
+  top: 2px;
+  font: var(--ff-small);
+}
+/* * */
+
+
+
+/* input=checkbox */
+.input_checkbox {
+  position: relative;
+}
+
+.input_checkbox input {
+  display: none;
+}
+
+.input_checkbox label {
+  cursor: pointer;
+  color: var(--dark-gray);
+  font: var(--ff-small);
+
+  transition: color .3s ease-out;
+}
+.input_checkbox input:checked + label {
+  color: var(--dark-blue);
+}
+.input_checkbox label:hover {
+  font-weight: bold;
+}
+
+.input_checkbox label:before {
+  content: '';
+
+  width: 20px;
+  height: 20px;
+
+  display: inline-block;
+
+  box-sizing: border-box;
+  border: 1px solid var(--dark-blue);
+
+  margin-right: calc(var(--mm) / 2);
+}
+
+.input_checkbox label:after {
+  content: '\2714';
+
+  font: var(--ff-normal);
+  font-size: 15px;
+  font-weight: bold;
+
+  color: var(--dark-blue);
+
+  position: absolute;
+  left: 4px;
+  bottom: 3px;
+
+  opacity: 0;
+
+  transition: opacity .3s ease-out;
+}
+
+.input_checkbox input:checked + label:after {
+  opacity: 1;
+}
+/* * */
+
+
+
 /* app settings */
 .wrapper {
   width: 100%;
@@ -280,14 +416,33 @@ textarea {
     "h h h h"   /* h - Header.module.css      */
     ". n c ."   /* n - NavBar.module.css      */
     ". u c ."   /* s - UsersSearch.module.css */
-    ". f c ."   /* f - FriendsBar.module.css  */
+    ". f c ."   /* f - local                  */
+    ". o c ."   /* o - local                  */
     ". . c ."   /* c - local                  */
   ;
 
   grid-template-columns: var(--of) 200px minmax(0, calc(800px - var(--mm))) var(--of);
-  grid-template-rows: var(--hh) minmax(auto, calc(var(--bh) + var(--mm))) auto auto 1fr;
+  grid-template-rows: var(--hh) minmax(auto, calc(var(--bh) + var(--mm))) auto auto auto 1fr;
   grid-column-gap: var(--mm);
 }
+
+.content {
+  grid-area: c;   /* local */
+}
+
+.left_bar {
+  grid-area: f;   /* local */
+  position: sticky;
+  top: calc(var(--bh) + var(--hh) + var(--mmm) + var(--mm) + 50px);
+}
+
+.left_offset {
+  grid-area: o;   /* local */
+  position: sticky;
+  top: calc(var(--bh) + var(--hh) + var(--mmm) + var(--mm) * 2 + 168px);
+}
+
+
 
 /* MOBILE */
 @media only screen and (max-width: 750px) {
@@ -299,9 +454,9 @@ textarea {
     grid-template-columns: var(--of) 1fr var(--of);
     grid-template-rows: 50px 1fr;
   }
-}
 
-.content {
-  grid-area: c;   /* local */
+  .left_bar {
+    display: none;
+  }
 }
 /* * */

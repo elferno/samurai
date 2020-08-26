@@ -29,6 +29,7 @@ body {
 
   --bh: 205px;  /* nav bar height */
   --hh: 50px;   /* header height */
+  --button-h: 40px; /* button/input=text height */
 
   --of: minmax(0, auto);  /* отступы контента от края экрана */
 
@@ -39,7 +40,7 @@ body {
   --avatar-z: 34px;
   --avatar-s: 45px;
   --avatar-m: 60px;
-  --avatar-l: 150px;
+  --avatar-l: 152px;
 
   --dark-red: #5C0909;
   --red: #CF1818;

@@ -68,6 +68,8 @@
 
   box-sizing: border-box;
   border-left: 1px solid var(--gray);
+
+  position: relative;
 }
 
 .user_settings_container a {
@@ -76,8 +78,50 @@
 
   float: right;
   clear: right;
+
+  position: static;
 }
 
+.selected:before {
+  content: '';
+
+  width: 6px;
+  height: 6px;
+
+  background: var(--blue);
+  border-radius: var(--rr);
+
+  position: absolute;
+  left: var(--mm);
+  margin-top: 5px;
+}
+
+.handling {
+  cursor: default;
+  color: var(--dark-gray);
+}
+
+.handling:after {
+  display: none;
+}
+
+.handling:before {
+  content: '.';
+
+  position: absolute;
+  right: 0;
+  top: -9px;
+
+  font-size: 20px;
+
+  animation: dots 1s linear infinite;
+}
+
+@keyframes dots {
+  0% { content: '.'; }
+  50% { content: '..'; }
+  100% { content: '...'; }
+}
 
 @media (max-width: 880px) {
   .user {

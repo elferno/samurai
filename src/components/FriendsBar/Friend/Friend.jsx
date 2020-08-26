@@ -1,17 +1,22 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
+
+import Avatar from 'components/Common/Avatar/Avatar'
 
 import g_css from 'App.module.css'
 import l_css from './Friend.module.css'
 
 const css = {...g_css, ...l_css}
 
-const Friend = ({id, name, avatarSRC}) => {
+const Friend = ({id, name, havePH}) => {
   return (
-    <NavLink to={`/profile/${id}`} className={css.friend}>
-      <div className={`${css.avatar} ${css.a_s}`}><img src={avatarSRC} alt='' /></div>
-      <b>{name}</b>
-    </NavLink>
+    <div className={css.friend}>
+      <Avatar id={id} havePH={havePH} size={'mini'}/>
+
+      <NavLink to={`/profile/${id}`}>
+        <b>{name}</b>
+      </NavLink>
+    </div>
   )
 }
 

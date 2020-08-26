@@ -10,13 +10,19 @@ import l_css from './NavBar.module.css'
 const css = {...g_css, ...l_css}
 const act = {'activeClassName': css.active_link}
 
-const NavBar = ({ auth, login }) => {
+const NavBar = ({ auth, login, setLoginError }) => {
   return (
-    <nav className={`${css.bar} ${css.block} ${css.default_a} ${css.cc}`}>
+    <nav className={`${css.bar} ${css.block} ${css.default_a} ${css.cc} ${css.cc_column}`}>
       <PreloadContent
-        isLoading={auth.userID === null || auth.fetching}
-        noContent={auth.userID === false}
-        noContentFiller={<LoginBlock login={login} />}
+        isLoading={auth.isAuth === null || auth.fetching}
+        noContent={auth.isAuth === false}
+        noContentFiller={
+          <LoginBlock
+            auth={auth}
+            login={login}
+            setLoginError={setLoginError}
+          />
+        }
         clearContent={true}
       >
         <div className={css.container}>

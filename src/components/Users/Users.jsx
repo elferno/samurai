@@ -7,47 +7,39 @@ import l_css from './Users.module.css'
 
 const css = {...g_css, ...l_css}
 
-const Users = ({ page, users, limit, isLoading, totalUsers, setPageToNext, toggleFollow }) => {
+const Users = (props) => {
 
-  const canUploadMore = (page * limit + limit) < totalUsers
-
-  const localState = {
-    button: {
-      loading: totalUsers !== 0 && isLoading,
-      active : totalUsers !== 0 && !isLoading && canUploadMore,
-      setPageToNext
-    },
-
-    userList: {
-      toggleFollow,
-      totalUsers,
-      users
-    }
-  }
+  const { auth, isLoading, setPageToNext, ...userProps } = props
+  const canUploadMore = (props.page * props.limit + props.limit) < props.totalUsers
 
   return (
     <div className={css.content_wrapper}>
-      <UserList {...localState.userList} />
-      <UploadButton {...localState.button} />
+      <UserList isAuth={auth.isAuth} {...userProps}/>
+      <UploadButton
+        isLoading={props.totalUsers !== 0 && isLoading}
+        isActive= {props.totalUsers !== 0 && !isLoading && canUploadMore}
+        setPageToNext={setPageToNext}
+      />
     </div>
   )
 }
 
-const UserList = ({ users, totalUsers, toggleFollow }) => {
-  if (totalUsers) {
-    return users.map(user => <User key={user.id} toggleFollow={toggleFollow} {...user} />)
+const UserList = (props) => {
+  if (props.totalUsers) {
+    const {users, ...passProps} = props;
+    return users.map(user => <User key={user.id} {...passProps} {...user} />)
   }
 
   return null
 }
 
-const UploadButton = ({ loading, active, setPageToNext }) => {
-  if (loading) {
-    return <div className={`${css.button} ${css.loading_button}`}>LOADING...</div>
+const UploadButton = ({ isLoading, isActive, setPageToNext }) => {
+  if (isLoading) {
+    return <div className={`${css.button} ${css.lb}`}>LOADING...</div>
   }
 
-  if (active) {
-    return <div className={`${css.button} ${css.upload_button}`} onClick={setPageToNext}>UPLOAD MORE</div>
+  if (isActive) {
+    return <div className={`${css.button} ${css.ub}`} onClick={setPageToNext}>UPLOAD MORE</div>
   }
 
   return null

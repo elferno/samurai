@@ -3,14 +3,14 @@
   margin-bottom: var(--mm);
 }
 
-.upload_button, .loading_button {
+.ub, .lb {
   margin-top: var(--mm);
   position: relative;
   left: 50%;
   transform: translate(-50%);
 }
 
-.loading_button {
+.lb {
   min-width: 108px;
   text-align: center;
   background-color: var(--dark-gray);

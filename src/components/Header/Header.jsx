@@ -12,7 +12,7 @@ const Header = ({ auth, logout }) => {
       <div className={css.wrapper}>
         <img src='https://jasonpallone.com/React-icon.png' alt=''/>
         {
-          auth.userID && !auth.fetching &&
+          auth.isAuth && !auth.fetching &&
           <UserMenu auth={auth} logout={logout} />
         }
       </div>

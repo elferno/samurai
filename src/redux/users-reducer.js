@@ -65,11 +65,6 @@ function userReducer(state = initialState, action) {
   }
 }
 
-export const toggleFollow = (userId) => ({
-  type: TOGGLE_FOLLOW,
-  userId
-})
-
 export const setPageToNext = () => ({
   type: SET_PAGE_TO_NEXT
 })

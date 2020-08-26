@@ -15,12 +15,16 @@ const UserMenu = ({ auth, logout }) => {
 
   return (
     <div className={css.user_menu}>
-      <NavLink to='/profile'>{auth.userName}</NavLink>
-      <Avatar id={auth.userID} havePH={auth.havePH} size={'mini'} shadow={true} />
+      <NavLink to='/profile'>{auth.userInfo.userName}</NavLink>
+      <Avatar
+        id={auth.userInfo.userID}
+        havePH={auth.userInfo.havePH}
+        size={'mini'}
+        shadow={true}
+      />
       <a href='/#' className={css.logout} onClick={clickHandler}>×</a>
     </div>
   )
-
 }
 
 export default UserMenu

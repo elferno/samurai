@@ -1,7 +1,6 @@
 import React from 'react'
-import {connect} from 'react-redux'
-import {withRouter} from 'react-router-dom'
-import axios from 'axios'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 import Profile from './Profile'
 import Error404 from 'components/Common/Error404/Error404'
@@ -20,6 +19,11 @@ import {
 } from
     'redux/profile-reducer'
 
+import {
+  API_setProfile
+} from
+    'api/api'
+
 class ProfileAPI extends React.Component {
   get url_id() {
     return this.props.match.params.id || 'own'
@@ -28,16 +32,13 @@ class ProfileAPI extends React.Component {
   get isOwnPage() {
     return this.url_id === 'own'
   }
+
   setProfile() {
     this.props.setCurrentId(this.url_id)
-    axios
-      .get(
-        `https://fishup.fun/api/profile.php?id=${this.url_id}`,
-        {withCredentials: 'include'}
-      )
-      .then(response => {
-        if (response.data.requested_id === this.url_id)
-          this.props.setProfile(response.data.info)
+    API_setProfile(this.url_id)
+      .then(data => {
+        if (data.requested_id === this.url_id)
+          this.props.setProfile(data.info)
       })
   }
 
@@ -51,6 +52,7 @@ class ProfileAPI extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    // var
     let reset = false
 
     // when URL change : profile/0 -> profile/1
@@ -63,14 +65,19 @@ class ProfileAPI extends React.Component {
     // when login/logout (only for own page)
     if (
       this.isOwnPage &&
-      prevProps.auth.userID !== this.props.auth.userID
+      prevProps.auth.isAuth !== this.props.auth.isAuth
     )
       reset = true
 
-    if (reset) {
+    if (reset)
       this.props.resetPage()
+
+    // load new data
+    if(
+      prevProps.state.info !== null &&    // page was set
+      this.props.state.info === null      // then reset from 72.str
+    )
       this.setProfile()
-    }
   }
 
   render() {
@@ -81,7 +88,7 @@ class ProfileAPI extends React.Component {
     } = this.props
 
     const ownPage_authFetching = (this.props.auth.fetching && this.isOwnPage)
-    const ownPage_noAuth = (!this.props.auth.userID && this.isOwnPage)
+    const ownPage_noAuth = (!this.props.auth.isAuth && this.isOwnPage)
 
     return (
       <PreloadContent

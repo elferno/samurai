@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 import Avatar from 'components/Common/Avatar/Avatar'
 
@@ -14,37 +14,81 @@ const clickHandler = (e, callBack = false, ...param) => {
     callBack(...param)
 }
 
-const User = ({id, name, location, status, followed, photos, toggleFollow}) => {
+const User = (props) => {
+
+  const {
+    id, isAuth, photos, name, location, status, ...userProps } = props
+
   return (
     <div className={`${css.block} ${css.user}`}>
-      <Avatar id={id} havePH={photos.small} size={'medium'} />
-      <UserInfo id={id} name={name} location={location} status={status} />
-      <UserSettings id={id} followed={followed} toggleFollow={toggleFollow} />
+      <Avatar id={id} havePH={photos.small} size={'medium'}/>
+      <UserInfo id={id} name={name} location={location} status={status}/>
+      {
+        isAuth
+          ? <UserSettings id={id} {...userProps}/>
+          : <UserSettingsFiller/>
+      }
     </div>
   )
 }
 
-const UserInfo = ({ id, name, location, status }) => {
-  return(
+const UserInfo = (props) => {
+  return (
     <div className={css.user_info_container}>
-      <NavLink to={`/profile/${id}`}>
-        <b>{name}{id}</b>
+      <NavLink to={`/profile/${props.id}`}>
+        <b>{props.name} : {props.id}</b>
       </NavLink>
-      <u>{location.country} : {location.city}</u>
-      <p>{status || <i className={css.no_status}>no status</i>}</p>
+      <u>{props.location.country} : {props.location.city}</u>
+      <p>{props.status || <i className={css.no_status}>no status</i>}</p>
     </div>
   )
 }
 
-const UserSettings = ({ id, toggleFollow, followed }) => {
+const UserSettings = (props) => {
+
+  const id = props.id
+  const isFriend = props.friendsList.includes(id)
+  const f_iSLoading = props.friendIsFetching.includes(id)
+
+  const is_I_Follow = props.followList.includes(id)
+  const i_f_iSLoading = props.followIsFetching.includes(id)
+
   return (
     <div className={`${css.user_settings_container} ${css.default_a}`}>
-      <a href='/#' onClick={(e) => clickHandler(e, toggleFollow, id)}>
-        {followed ? 'un-follow' : 'follow'}
-      </a>
-      <a href='/#' onClick={clickHandler}>set as friend</a>
+      <FetchingA
+        click={(e) => clickHandler(e, props.setFollowTo, id, !is_I_Follow)}
+        isLoading={i_f_iSLoading}
+        isOn={is_I_Follow}
+        onContent='un-follow'
+        offContent='follow'
+      />
+
+      <FetchingA
+        click={(e) => clickHandler(e, props.setFriendTo, id, !isFriend)}
+        isLoading={f_iSLoading}
+        isOn={isFriend}
+        onContent='un-friend'
+        offContent='set as friend'
+      />
+
       <a href='/#' onClick={clickHandler}>send message</a>
     </div>
+  )
+}
+
+const FetchingA = ({click, isLoading, isOn, onContent, offContent}) => {
+
+  const onClick = isLoading ? clickHandler : click,
+        classNM = isLoading ? css.handling : isOn ? css.selected : null,
+        content = isLoading ? '&nbsp;' : isOn ? onContent : offContent
+
+    return <a href='/#' onClick={onClick} className={classNM}>{content}</a>
+}
+
+const UserSettingsFiller = () => {
+  return (
+    <div className={`${css.user_settings_container} ${css.default_a}`}
+         style={{background: 'var(--gray)', opacity: '.5'}}/>
   )
 }
 

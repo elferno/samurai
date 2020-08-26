@@ -1,31 +1,63 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 import Friend from './Friend/Friend'
+import AdvBar from 'components/Common/AdvBar/AdvBar'
 
 import g_css from 'App.module.css'
 import l_css from './FriendsBar.module.css'
 
 const css = {...g_css, ...l_css}
 
-const FriendsBar = ({ friends, maxFriendsShow }) => {
+const FriendsBar = (props) => {
 
-  const friendList = friends
-                      .slice(0, maxFriendsShow)
-                      .map(friend => <Friend key={friend.id} {...friend}/>)
+  const { totalFriends, totalFollowers = 0, totalFollow } = props
 
   return (
-    <aside className={`${css.bar} ${css.block}`}>
-      <div className={css.block_label}>
-        <div className={css.num_label}><b>{friends.length}</b></div>
-        <NavLink to='/friends' activeClassName={css.active_link}>My friends</NavLink>
-      </div>
+    <>
+      <aside className={`${css.block} ${css.left_bar}`}>
+        {
+          props.auth.isAuth
+            ? <Links tFR={totalFriends} tFS={totalFollowers} tFL={totalFollow}/>
+            : <AdvBar id={0}/>
+        }
+      </aside>
 
-      <div className={css.wrapper}>
-        { friendList }
-      </div>
-    </aside>
+      <aside className={`${css.block} ${css.left_offset}`}>
+        {
+          props.totalFriends
+            ? <FriendList friends={props.friends}/>
+            : <AdvBar id={1}/>
+        }
+      </aside>
+    </>
   )
 }
+
+const FriendList = ({friends}) => {
+  return friends.map(friend => <Friend key={friend.id} {...friend}/>)
+}
+
+const Links = ({tFR, tFS, tFL}) => {
+  return (
+    <>
+      <div className={css.num_label}>
+        <NavLink to='/friends' activeClassName={css.active_link}>My friends</NavLink>
+        <div><b>{tFR}</b></div>
+      </div>
+
+      <div className={css.num_label}>
+        <NavLink to='/followers' activeClassName={css.active_link}>My followers</NavLink>
+        <div><b>{tFS}</b></div>
+      </div>
+
+      <div className={css.num_label}>
+        <NavLink to='/follow' activeClassName={css.active_link}>I follow</NavLink>
+        <div><b>{tFL}</b></div>
+      </div>
+    </>
+  )
+}
+
 
 export default FriendsBar
