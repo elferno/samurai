@@ -1,4 +1,5 @@
-import { createStore, combineReducers } from 'redux'
+import {createStore, combineReducers, applyMiddleware} from 'redux'
+import thunk from 'redux-thunk'
 
 import friendsReducer from './friends-reducer'
 import followReducer from './follow-reducer'
@@ -18,8 +19,6 @@ const reducers = combineReducers({
   follow: followReducer
 })
 
-const store = createStore(reducers)
-
-window.store = store
+const store = createStore(reducers, applyMiddleware(thunk))
 
 export default store

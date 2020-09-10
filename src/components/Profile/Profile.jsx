@@ -4,18 +4,20 @@ import ProfileInfo from './ProfileInfo/ProfileInfo'
 import PostCreate from './PostCreate/PostCreate'
 import PostList from './PostList/PostList'
 
-const Profile = ({ state, addPost, setNewPostText }) => {
+const Profile = ({state, addPost, isAuth, setNewPostText}) => {
   return (
     <>
       <ProfileInfo {...state.info} />
 
-      <PostCreate
-        addPost={addPost}
-        setNewPostText={setNewPostText}
-        newPostText={state.newPostText}
-      />
+      {
+        isAuth && <PostCreate
+          addPost={addPost}
+          setNewPostText={setNewPostText}
+          newPostText={state.newPostText}
+        />
+      }
 
-      <PostList posts={state.posts} />
+      <PostList posts={state.posts}/>
     </>
   )
 }

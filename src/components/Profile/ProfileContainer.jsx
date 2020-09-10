@@ -13,33 +13,18 @@ import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 import {
   addPost,
   resetPage,
-  setProfile,
-  setCurrentId,
-  setNewPostText
+  setNewPostText,
+
+  setProfileAPI
 } from
     'redux/profile-reducer'
 
-import {
-  API_setProfile
-} from
-    'api/api'
-
 class ProfileAPI extends React.Component {
-  get url_id() {
-    return this.props.match.params.id || 'own'
-  }
-
-  get isOwnPage() {
-    return this.url_id === 'own'
-  }
+  get url_id() { return this.props.match.params.id || 'own' }
+  get isOwnPage() { return this.url_id === 'own' }
 
   setProfile() {
-    this.props.setCurrentId(this.url_id)
-    API_setProfile(this.url_id)
-      .then(data => {
-        if (data.requested_id === this.url_id)
-          this.props.setProfile(data.info)
-      })
+    this.props.setProfileAPI(this.url_id)
   }
 
   componentDidMount() {
@@ -52,53 +37,45 @@ class ProfileAPI extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    // var
     let reset = false
 
-    // when URL change : profile/0 -> profile/1
+    // when URL changed
     if (
-      this.props.state.currentID !== null &&
-      this.props.state.currentID !== this.url_id
+      this.props.state.currentID !== null &&      // not initial page load
+      this.props.state.currentID !== this.url_id  // URL changed
     )
       reset = true
 
-    // when login/logout (only for own page)
-    if (
-      this.isOwnPage &&
-      prevProps.auth.isAuth !== this.props.auth.isAuth
-    )
+    // when login / logout
+    if (prevProps.auth.isAuth !== this.props.auth.isAuth)
       reset = true
 
-    if (reset)
+    if (reset) {
       this.props.resetPage()
-
-    // load new data
-    if(
-      prevProps.state.info !== null &&    // page was set
-      this.props.state.info === null      // then reset from 72.str
-    )
       this.setProfile()
+    }
   }
 
   render() {
     const {
+      auth,
       state,
       addPost,
       setNewPostText
     } = this.props
 
-    const ownPage_authFetching = (this.props.auth.fetching && this.isOwnPage)
-    const ownPage_noAuth = (!this.props.auth.isAuth && this.isOwnPage)
+    const ownPage_noAuth = (!auth.isAuth && this.isOwnPage)
 
     return (
       <PreloadContent
-        isLoading={state.info === null  || ownPage_authFetching}
+        isLoading={state.info === null  || this.props.auth.fetching}
         noContent={state.info === false || ownPage_noAuth}
         noContentFiller={<Error404 />}
       >
         <Profile
           state={state}
           addPost={addPost}
+          isAuth={auth.isAuth}
           setNewPostText={setNewPostText}
         />
       </PreloadContent>
@@ -111,9 +88,9 @@ const ProfileContainer = connect((state) => ({
 }), {
   addPost,
   resetPage,
-  setProfile,
-  setCurrentId,
-  setNewPostText
+  setNewPostText,
+
+  setProfileAPI
 })
   (withRouter(ProfileAPI))
 

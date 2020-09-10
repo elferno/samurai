@@ -16,13 +16,7 @@ const NavBar = ({ auth, login, setLoginError }) => {
       <PreloadContent
         isLoading={auth.isAuth === null || auth.fetching}
         noContent={auth.isAuth === false}
-        noContentFiller={
-          <LoginBlock
-            auth={auth}
-            login={login}
-            setLoginError={setLoginError}
-          />
-        }
+        noContentFiller={<LoginBlock auth={auth} login={login} setLoginError={setLoginError}/>}
         clearContent={true}
       >
         <div className={css.container}>

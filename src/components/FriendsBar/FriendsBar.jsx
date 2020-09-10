@@ -4,10 +4,7 @@ import {NavLink} from 'react-router-dom'
 import Friend from './Friend/Friend'
 import AdvBar from 'components/Common/AdvBar/AdvBar'
 
-import g_css from 'App.module.css'
-import l_css from './FriendsBar.module.css'
-
-const css = {...g_css, ...l_css}
+import css from 'App.module.css'
 
 const FriendsBar = (props) => {
 

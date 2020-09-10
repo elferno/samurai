@@ -80,7 +80,7 @@ const FetchingA = ({click, isLoading, isOn, onContent, offContent}) => {
 
   const onClick = isLoading ? clickHandler : click,
         classNM = isLoading ? css.handling : isOn ? css.selected : null,
-        content = isLoading ? '&nbsp;' : isOn ? onContent : offContent
+        content = isOn ? onContent : offContent
 
     return <a href='/#' onClick={onClick} className={classNM}>{content}</a>
 }

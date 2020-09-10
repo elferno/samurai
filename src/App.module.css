@@ -53,6 +53,16 @@
 /* * */
 
 
+/* preload */
+.hide_a_sec {
+  opacity: 0;
+  animation: fadein 1s ease-out .5s forwards;
+}
+
+@keyframes fadein { from { opacity:1; } to { opacity: 1; } }
+/* * */
+
+
 /* default link */
 a {
   display: block;
@@ -455,7 +465,7 @@ textarea {
     grid-template-rows: 50px 1fr;
   }
 
-  .left_bar {
+  .left_bar, .left_offset {
     display: none;
   }
 }

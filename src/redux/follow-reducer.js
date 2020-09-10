@@ -1,3 +1,5 @@
+import { API_follow } from 'api/api'
+
 const SET_FOLLOW = 'follow:SET-FOLLOW',
   SET_FOLLOW_LIST = 'follow:SET-FOLLOW-LIST',
   TOGGLE_FOLLOW_FETCHING = 'follow:TOGGLE-FRIEND-FETCHING'
@@ -38,23 +40,35 @@ const followReducer = (state = initialState, action) => {
   }
 }
 
-export const setFollow = (follow) => {
-  return {
-    type: SET_FOLLOW,
-    follow
-  }
-}
 
+// actions
+export const setFollow = (follow) => ({type: SET_FOLLOW, follow })
 export const setFollowList = (followList = [], totalFollow = 0) => ({
   type: SET_FOLLOW_LIST,
   totalFollow,
   followList
 })
+export const toggleFollowFetching = (followId) => ({type: TOGGLE_FOLLOW_FETCHING, followId})
 
-export const toggleFollowFetching = (followId) => {
-  return {
-    type: TOGGLE_FOLLOW_FETCHING,
-    followId
+
+// thunks
+export const setFollowToAPI = (followId, doFollow) => (dispatch) => {
+
+  const body = JSON.stringify({followId})
+  dispatch(toggleFollowFetching(followId))
+
+  if (doFollow) {
+    API_follow.setFollowTo('PATCH', body)
+      .then(data => {
+        dispatch(toggleFollowFetching(followId))
+        dispatch(setFollow(data))
+      })
+  } else {
+    API_follow.setFollowTo('DELETE', body)
+      .then(data => {
+        dispatch(toggleFollowFetching(followId))
+        dispatch(setFollow(data))
+      })
   }
 }
 

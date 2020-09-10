@@ -4,67 +4,17 @@ import {connect} from 'react-redux'
 import Users from './Users'
 import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 
-import {
-  setUsers,
-  resetPage,
-  updateUsers,
-  setPageToNext,
-  toggleIsLoading
-} from
-    'redux/users-reducer'
-
-import {
-  setFriends,
-  setFriendsList,
-  toggleFriendFetching
-} from
-    'redux/friends-reducer'
-
-import {
-  setFollow,
-  setFollowList,
-  toggleFollowFetching
-} from
-    'redux/follow-reducer'
-
-import {
-  API_getUsers,
-  API_setFriendTo,
-  API_setFollowTo
-} from
-    'api/api'
-
+import { setFriendToAPI } from 'redux/friends-reducer'
+import { setFollowToAPI } from 'redux/follow-reducer'
+import { resetPage, getUsersAPI, updateUsersAPI } from 'redux/users-reducer'
 
 class UsersAPI extends React.Component {
-  constructor(props) {
-    super(props)
-    this.alive = true
-
-    this.setFriendTo = this.setFriendTo.bind(this)
-    this.setFollowTo = this.setFollowTo.bind(this)
-  }
-
   setUsers() {
-    API_getUsers(this.props.page, this.props.limit)
-      .then(data => {
-        if (this.alive) {
-          this.props.setUsers(data.users, data.totalUsers)
-          this.props.setFriendsList(data.friendsList, data.totalFriends)
-          this.props.setFollowList(data.followList, data.totalFollow)
-        }
-      })
+    this.props.getUsersAPI(this.props.page, this.props.limit)
   }
 
   updateUsers() {
-    this.props.toggleIsLoading()
-
-    API_getUsers(this.props.page, this.props.limit)
-      .then(data => {
-        if (this.alive) {
-          this.props.updateUsers(data.users)
-          this.props.toggleIsLoading()
-        }
-      })
+    this.props.updateUsersAPI(this.props.page, this.props.limit)
   }
 
   componentDidMount() {
@@ -72,7 +22,6 @@ class UsersAPI extends React.Component {
   }
 
   componentWillUnmount() {
-    this.alive = false
     this.props.resetPage()
   }
 
@@ -89,52 +38,13 @@ class UsersAPI extends React.Component {
     if (prevProps.auth.isAuth !== this.props.auth.isAuth)
       this.props.resetPage()
 
-    if (this.props.users === null)
+    if (
+      prevProps.users !== null &&
+      this.props.users === null
+    )
       this.setUsers()
     //
   }
-
-
-  setFriendTo(friendId, doFriend) {
-
-    const body = JSON.stringify({friendId})
-    this.props.toggleFriendFetching(friendId)
-
-    if (doFriend) {
-      API_setFriendTo('PATCH', body)
-       .then(data => {
-         this.props.toggleFriendFetching(friendId)
-         this.props.setFriends(data)
-       })
-    } else {
-      API_setFriendTo('DELETE', body)
-       .then(data => {
-         this.props.toggleFriendFetching(friendId)
-         this.props.setFriends(data)
-       })
-    }
-  }
-
-  setFollowTo(followId, doFollow) {
-
-    const body = JSON.stringify({followId})
-    this.props.toggleFollowFetching(followId)
-
-    if (doFollow) {
-      API_setFollowTo('PATCH', body)
-      .then(data => {
-        this.props.toggleFollowFetching(followId)
-        this.props.setFollow(data)
-      })
-    } else {
-      API_setFollowTo('DELETE', body)
-      .then(data => {
-        this.props.toggleFollowFetching(followId)
-        this.props.setFollow(data)
-      })
-    }
-  }
-
 
   render() {
     return (
@@ -144,8 +54,8 @@ class UsersAPI extends React.Component {
         noContentFiller={'no users found'}
       >
         <Users
-          setFriendTo={this.setFriendTo}
-          setFollowTo={this.setFollowTo}
+          setFriendTo={this.props.setFriendToAPI}
+          setFollowTo={this.props.setFollowToAPI}
           {...this.props}
         />
       </PreloadContent>
@@ -166,21 +76,12 @@ const UsersContainer = connect((state) => ({
   followList: state.follow.followList,
   followIsFetching: state.follow.followIsFetching
 }), {
-  setUsers,
   resetPage,
-  updateUsers,
-  setPageToNext,
-  toggleIsLoading,
-
-  setFollow,
-  setFollowList,
-  toggleFollowFetching,
-
-
-  setFriends,
-  setFriendsList,
-  toggleFriendFetching
+  getUsersAPI,
+  updateUsersAPI,
+  setFollowToAPI,
+  setFriendToAPI
 })
-(UsersAPI)
+  (UsersAPI)
 
 export default UsersContainer

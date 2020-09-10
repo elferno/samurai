@@ -1,3 +1,5 @@
+import { API_profile } from 'api/api'
+
 const
   ADD_POST = 'profile:ADD-POST',
   RESET_PAGE = 'profile:RESET-PAGE',
@@ -65,28 +67,26 @@ const profileReducer = (state = initialState, action) => {
   }
 }
 
-export const setNewPostText = (text) => ({
-  type: SET_NEW_POST_TEXT,
-  text
-})
+// actions
+export const setNewPostText = (text) => ({type: SET_NEW_POST_TEXT, text})
+export const addPost = () => ({type: ADD_POST})
+export const resetPage = () => ({type: RESET_PAGE})
+export const setProfile = (info) => ({type: SET_PROFILE, info})
+export const setCurrentId = (id) => ({type: SET_CURRENT_ID, id})
 
-export const addPost = () => ({
-  type: ADD_POST
-})
 
-export const resetPage = () => ({
-  type: RESET_PAGE
-})
+// thunks
+export const setProfileAPI = (id) => (dispatch, getState) => {
 
-export const setProfile = (info) => ({
-  type: SET_PROFILE,
-  info
-})
+  dispatch(setCurrentId(id))
 
-export const setCurrentId = (id) => ({
-  type: SET_CURRENT_ID,
-  id
-})
+  API_profile.setProfile(id)
+    .then(data => {
+      const { currentID } = getState().profile
+      if (data.requested_id === currentID)
+        dispatch(setProfile(data.info))
+    })
+}
 
 
 export default profileReducer

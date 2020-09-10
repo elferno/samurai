@@ -7,7 +7,7 @@ const css = {...g_css, ...l_css}
 
 const Loading = () => {
   return (
-    <div className={`${css.block} ${css.before_content} ${css.cc}`}>
+    <div className={`${css.block} ${css.before_content} ${css.cc} ${css.hide_a_sec}`}>
       <LoadingIcon />
     </div>
   )

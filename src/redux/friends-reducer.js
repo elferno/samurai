@@ -1,3 +1,5 @@
+import { API_friends } from 'api/api'
+
 const SET_FRIENDS_BAR = 'friends:SET-FRIENDS-BAR',
       SET_FRIENDS_LIST = 'friends:SET-FRIENDS-LIST',
       SET_FRIENDS = 'friends:SET_FRIENDS',
@@ -51,30 +53,38 @@ const friendsReducer = (state = initialState, action) => {
 }
 
 
+// actions
 export const setFriendsBar = (friendsBar = [], totalFriends = 0) => ({
   type: SET_FRIENDS_BAR,
   totalFriends,
   friendsBar
 })
-
 export const setFriendsList = (friendsList = [], totalFriends = 0) => ({
   type: SET_FRIENDS_LIST,
   totalFriends,
   friendsList
 })
+export const setFriends = (friends) => ({type: SET_FRIENDS, friends })
+export const toggleFriendFetching = (friendId) => ({type: TOGGLE_FRIEND_FETCHING, friendId})
 
+// thunks
+export const setFriendToAPI = (friendId, doFriend) => (dispatch) => {
 
-export const setFriends = (friends) => {
-  return {
-    type: SET_FRIENDS,
-    friends
-  }
-}
+  const body = JSON.stringify({friendId})
+  dispatch(toggleFriendFetching(friendId))
 
-export const toggleFriendFetching = (friendId) => {
-  return {
-    type: TOGGLE_FRIEND_FETCHING,
-    friendId
+  if (doFriend) {
+    API_friends.setFriendTo('PATCH', body)
+      .then(data => {
+        dispatch(toggleFriendFetching(friendId))
+        dispatch(setFriends(data))
+      })
+  } else {
+    API_friends.setFriendTo('DELETE', body)
+      .then(data => {
+        dispatch(toggleFriendFetching(friendId))
+        dispatch(setFriends(data))
+      })
   }
 }
 
