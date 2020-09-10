@@ -28,22 +28,16 @@ class UsersAPI extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     // switch "page" (click "upload more") -> upload users
     if (
-      this.props.users !== null &&
-      prevProps.page !== this.props.page
+      this.props.users !== null &&        // not initial page load
+      prevProps.page !== this.props.page  // page has changed
     )
       this.updateUsers()
-    //
 
-    // login/logout - re-render page
-    if (prevProps.auth.isAuth !== this.props.auth.isAuth)
+    // login / logout
+    if (prevProps.auth.isAuth !== this.props.auth.isAuth) {
       this.props.resetPage()
-
-    if (
-      prevProps.users !== null &&
-      this.props.users === null
-    )
       this.setUsers()
-    //
+    }
   }
 
   render() {

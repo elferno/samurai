@@ -39,14 +39,14 @@ class ProfileAPI extends React.Component {
   componentDidUpdate(prevProps, prevState, snapshot) {
     let reset = false
 
-    // when URL changed
+    // URL changed
     if (
       this.props.state.currentID !== null &&      // not initial page load
       this.props.state.currentID !== this.url_id  // URL changed
     )
       reset = true
 
-    // when login / logout
+    // login / logout
     if (prevProps.auth.isAuth !== this.props.auth.isAuth)
       reset = true
 
