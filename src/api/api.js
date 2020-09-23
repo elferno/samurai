@@ -6,6 +6,14 @@ const xml = axios.create({
   responseType: 'json'
 })
 
+const cancelled = (th) => {
+  return !axios.isCancel(th)
+}
+
+const createToken = (callback) => {
+  return new axios.CancelToken(f => callback(f))
+}
+
 export const API_auth = {
   auth() {
     return xml.get('auth.php')
@@ -22,20 +30,37 @@ export const API_auth = {
   }
 }
 
-
 export const API_profile = {
   setProfile(id) {
-    return xml.get(`profile.php?id=${id}`)
+
+    const cancelToken = createToken(f => this.cancelSetProfile = f)
+
+    return xml.get(`profile.php?id=${id}`, {cancelToken})
       .then(response => response.data)
-  }
+      .catch(th => cancelled(th))
+  }, cancelSetProfile(){},
+
+  saveProfile(method, data) {
+
+    const cancelToken = createToken(f => this.cancelSaveProfile = f)
+
+    return xml('profile.php', {method, data, cancelToken})
+      .then(response => response.data)
+      .catch(th => cancelled(th))
+  }, cancelSaveProfile(){}
 }
 
 
 export const API_users = {
   getUsers(page, limit) {
-    return xml.get(`users.php?page=${page}&limit=${limit}`)
+
+    const url = `users.php?page=${page}&limit=${limit}`
+    const cancelToken = createToken(f => this.cancelGetUsers = f)
+
+    return xml.get(url, { cancelToken })
       .then(response => response.data)
-  }
+      .catch(th => cancelled(th))
+  }, cancelGetUsers() {}
 }
 
 

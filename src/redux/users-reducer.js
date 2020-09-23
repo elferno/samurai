@@ -12,15 +12,11 @@ const
   UPDATE_USERS = 'users:UPDATE-USERS',
   TOGGLE_IS_LOADING = 'users:SET-IS-LOADING',
   TOGGLE_FOLLOW = 'users:TOGGLE-FOLLOW-USER',
-  SET_PAGE_TO_NEXT = 'users:SET-PAGE-TO-NEXT',
-  SET_PAGE_ALIVE = 'users:SET-PAGE-ALIVE'
-
+  SET_PAGE_TO_NEXT = 'users:SET-PAGE-TO-NEXT'
 
 // state.users.
 const initialState = {
   users: null,       // null -> page is loading, false -> no users, [...] -> users list
-
-  alive: false,      // true -> we still on this URL, false -> we are on another URL
 
   page: 0,           // last uploaded users page
   limit: 4,          // users per 1 upload
@@ -71,12 +67,6 @@ function userReducer(state = initialState, action) {
         isLoading: !state.isLoading
       }
 
-    case SET_PAGE_ALIVE:
-      return {
-        ...state,
-        alive: action.alive
-      }
-
     default:
       return state
   }
@@ -92,17 +82,13 @@ export const setUsers = (users, totalUsers) => ({
 })
 export const updateUsers = (users) => ({type: UPDATE_USERS, users: Object.values(users)})
 export const toggleIsLoading = () => ({type: TOGGLE_IS_LOADING})
-export const setPageAlive = (alive) => ({type: SET_PAGE_ALIVE, alive})
 
 
 // thunks
-export const getUsersAPI = (page, limit) => (dispatch, getState) => {
-
-  dispatch(setPageAlive(true))
-
+export const getUsersAPI = (page, limit) => (dispatch) => {
   API_users.getUsers(page, limit)
     .then(data => {
-      if (getState().users.alive) {
+      if (data) {
         dispatch(setUsers(data.users, data.totalUsers))
         dispatch(setFriendsList(data.friendsList, data.totalFriends))
         dispatch(setFollowList(data.followList, data.totalFollow))
@@ -110,16 +96,20 @@ export const getUsersAPI = (page, limit) => (dispatch, getState) => {
     })
 }
 
-export const updateUsersAPI = (page, limit) => (dispatch, getState) => {
+export const updateUsersAPI = (page, limit) => (dispatch) => {
   dispatch(toggleIsLoading())
 
   API_users.getUsers(page, limit)
     .then(data => {
-      if (getState().users.alive) {
+      if (data) {
         dispatch(updateUsers(data.users))
         dispatch(toggleIsLoading())
       }
     })
+}
+
+export const cancelAPI = () => () => {
+  API_users.cancelGetUsers()
 }
 
 export default userReducer

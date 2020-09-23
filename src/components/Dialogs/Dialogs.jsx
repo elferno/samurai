@@ -1,5 +1,6 @@
 import React from 'react'
 
+import withAuthCheck from 'HOC/withAuthCheck'
 import MessagesContainer from './Messages/MessagesContainer'
 import EditorContainer from './Editor/EditorContainer'
 import DialogListContainer from './DialogList/DialogListContainer'
@@ -19,4 +20,4 @@ const Dialogs = () => {
   )
 }
 
-export default Dialogs
+export default withAuthCheck(Dialogs)

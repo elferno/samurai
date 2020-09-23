@@ -14,6 +14,13 @@ input, textarea, button {
   src: url('assets/fonts/roboto.woff') format('woff');
 }
 
+@font-face {
+  font-display: fallback;
+  font-family: 'Azonix';
+  src: url('assets/fonts/azonix.woff') format('woff');
+}
+
+
 html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -36,16 +43,18 @@ body {
   --ff-normal: normal .9rem Roboto, Impact, sans-serif;
   --ff-large: normal 1.5rem Roboto, Impact, sans-serif;
   --ff-small: normal .7rem Roboto, Impact, sans-serif;
+  --ff-button: normal .75rem Azonix, Impact, sans-serif;
 
   --avatar-z: 34px;
   --avatar-s: 45px;
   --avatar-m: 60px;
-  --avatar-l: 152px;
+  --avatar-l: 184px;
 
   --dark-red: #5C0909;
   --red: #CF1818;
 
   --dark-blue: #09405C;
+  --off-blue: #58798A;
   --blue: #1891CF;
 
   --gray: #D1D8DB;

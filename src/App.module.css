@@ -219,8 +219,9 @@ textarea {
   padding: 0 var(--mm) 0 var(--mm);
   border-radius: var(--r);
 
-  font: var(--ff-small);
+  font: var(--ff-button);
   line-height: 39px;
+  letter-spacing: 1px;
   color: var(--white);
   white-space: nowrap;
 
@@ -234,7 +235,7 @@ textarea {
 }
 
 .button:hover {
-  opacity: .9;
+  opacity: .8;
 }
 /* * */
 
@@ -306,6 +307,8 @@ textarea {
   height: var(--button-h);
 
   margin-top: var(--mm);
+  border-radius: var(--rr);
+  background-color: var(--white);
 
   position: relative;
 }

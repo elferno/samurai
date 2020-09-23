@@ -1,6 +1,7 @@
 import React from 'react'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 
 import Profile from './Profile'
 import Error404 from 'components/Common/Error404/Error404'
@@ -15,13 +16,14 @@ import {
   resetPage,
   setNewPostText,
 
-  setProfileAPI
+  setProfileAPI,
+  saveProfileAPI,
+  cancelAPI
 } from
     'redux/profile-reducer'
 
 class ProfileAPI extends React.Component {
   get url_id() { return this.props.match.params.id || 'own' }
-  get isOwnPage() { return this.url_id === 'own' }
 
   setProfile() {
     this.props.setProfileAPI(this.url_id)
@@ -32,6 +34,7 @@ class ProfileAPI extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.cancelAPI()
     this.props.match.params.id = null
     this.props.resetPage()
   }
@@ -64,18 +67,23 @@ class ProfileAPI extends React.Component {
       setNewPostText
     } = this.props
 
-    const ownPage_noAuth = (!auth.isAuth && this.isOwnPage)
+    const ownProfile = this.url_id === 'own'
+
+    if (!auth.isAuth && ownProfile)  // .../profile -> logged out
+      return <Redirect to='/'/>
 
     return (
       <PreloadContent
-        isLoading={state.info === null  || this.props.auth.fetching}
-        noContent={state.info === false || ownPage_noAuth}
-        noContentFiller={<Error404 />}
+        isLoading={state.info === null || this.props.auth.fetching}
+        noContent={state.info === false}
+        noContentFiller={<Error404/>}
       >
         <Profile
           state={state}
           addPost={addPost}
           isAuth={auth.isAuth}
+          ownProfile={ownProfile}
+          saveProfile={this.props.saveProfileAPI}
           setNewPostText={setNewPostText}
         />
       </PreloadContent>
@@ -83,15 +91,22 @@ class ProfileAPI extends React.Component {
   }
 }
 
-const ProfileContainer = connect((state) => ({
+const mapStateToProps = (state) => ({
   state: state.profile
-}), {
+})
+
+const mapDispatchToProps = {
   addPost,
   resetPage,
   setNewPostText,
 
-  setProfileAPI
-})
-  (withRouter(ProfileAPI))
+  setProfileAPI,
+  saveProfileAPI,
+  cancelAPI
+}
 
-export default ProfileContainer
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  withRouter
+)
+  (ProfileAPI)

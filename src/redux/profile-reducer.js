@@ -1,11 +1,12 @@
-import { API_profile } from 'api/api'
+import {API_profile} from 'api/api'
 
 const
   ADD_POST = 'profile:ADD-POST',
   RESET_PAGE = 'profile:RESET-PAGE',
   SET_PROFILE = 'profile:SET-PROFILE',
   SET_CURRENT_ID = 'profile:SET-CURRENT-ID',
-  SET_NEW_POST_TEXT = 'profile:SET-NEW-POST-TEXT'
+  SET_NEW_POST_TEXT = 'profile:SET-NEW-POST-TEXT',
+  SET_SAVING_PROFILE = 'profile:SET-SAVING-PROFILE'
 
 
 // state.profile.
@@ -20,7 +21,7 @@ const initialState = {
                           // чтобы менять содержимое страницы, если он вдруг изменится
                           // типа URL то при этом меняется, но вот <Route просто
                           // переиспользует созданный ранее инстанс класса ProfileContainer
-
+  saving: false,
   newPostText: ''
 }
 
@@ -62,6 +63,12 @@ const profileReducer = (state = initialState, action) => {
         newPostText: action.text
       }
 
+    case SET_SAVING_PROFILE:
+      return {
+        ...state,
+        saving: action.saving
+      }
+
     default:
       return state
   }
@@ -73,19 +80,40 @@ export const addPost = () => ({type: ADD_POST})
 export const resetPage = () => ({type: RESET_PAGE})
 export const setProfile = (info) => ({type: SET_PROFILE, info})
 export const setCurrentId = (id) => ({type: SET_CURRENT_ID, id})
+export const setSavingProfile = (saving) => ({type: SET_SAVING_PROFILE, saving})
 
 
 // thunks
-export const setProfileAPI = (id) => (dispatch, getState) => {
+export const setProfileAPI = (id) => (dispatch) => {
 
   dispatch(setCurrentId(id))
 
   API_profile.setProfile(id)
     .then(data => {
-      const { currentID } = getState().profile
-      if (data.requested_id === currentID)
+      if (data)
         dispatch(setProfile(data.info))
     })
+
+
+}
+
+export const saveProfileAPI = (data, callback) => (dispatch) => {
+
+  dispatch(setSavingProfile(true))
+
+  API_profile.saveProfile('patch', data)
+    .then(data => {
+      if (data) {
+        dispatch(setProfile(data.info))
+        callback(data.info)
+      }
+      setTimeout(() => dispatch(setSavingProfile(false)), 100)
+    })
+}
+
+export const cancelAPI = () => () => {
+  API_profile.cancelSetProfile()
+  API_profile.cancelSaveProfile()
 }
 
 

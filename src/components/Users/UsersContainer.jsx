@@ -6,7 +6,8 @@ import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 
 import { setFriendToAPI } from 'redux/friends-reducer'
 import { setFollowToAPI } from 'redux/follow-reducer'
-import { resetPage, getUsersAPI, updateUsersAPI } from 'redux/users-reducer'
+import { resetPage, setPageToNext, getUsersAPI, updateUsersAPI, cancelAPI }
+  from 'redux/users-reducer'
 
 class UsersAPI extends React.Component {
   setUsers() {
@@ -22,6 +23,7 @@ class UsersAPI extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.cancelAPI()
     this.props.resetPage()
   }
 
@@ -34,7 +36,7 @@ class UsersAPI extends React.Component {
       this.updateUsers()
 
     // login / logout
-    if (prevProps.auth.isAuth !== this.props.auth.isAuth) {
+    if (prevProps.isAuth !== this.props.isAuth) {
       this.props.resetPage()
       this.setUsers()
     }
@@ -57,7 +59,7 @@ class UsersAPI extends React.Component {
   }
 }
 
-const UsersContainer = connect((state) => ({
+const mapStateToProps = (state) => ({
   totalUsers: state.users.totalUsers,
   isLoading: state.users.isLoading,
   users: state.users.users,
@@ -69,13 +71,16 @@ const UsersContainer = connect((state) => ({
 
   followList: state.follow.followList,
   followIsFetching: state.follow.followIsFetching
-}), {
+})
+
+const mapDispatchToProps = {
   resetPage,
+  setPageToNext,
   getUsersAPI,
   updateUsersAPI,
   setFollowToAPI,
-  setFriendToAPI
-})
-  (UsersAPI)
+  setFriendToAPI,
+  cancelAPI
+}
 
-export default UsersContainer
+export default connect(mapStateToProps, mapDispatchToProps)(UsersAPI)

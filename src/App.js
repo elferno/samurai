@@ -62,7 +62,7 @@ const Content = ({auth, login, logout, setLoginError}) => {
         <Route path='/' exact render={() => <Hello/>}/>
         <Route path='/profile/:id?' render={() => <ProfileContainer auth={auth}/>}/>
         <Route path='/dialogs' render={() => <Dialogs/>}/>
-        <Route path='/users' render={() => <UsersContainer auth={auth}/>}/>
+        <Route path='/users' render={() => <UsersContainer isAuth={auth.isAuth}/>}/>
         <Route path='/news'/>
         <Route path='/music'/>
         <Route path='/settings'/>
@@ -80,6 +80,6 @@ const App = connect((state) => ({
   loginAPI,
   logoutAPI
 })
-(AppAPI)
+  (AppAPI)
 
 export default App

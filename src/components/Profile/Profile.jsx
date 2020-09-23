@@ -4,10 +4,18 @@ import ProfileInfo from './ProfileInfo/ProfileInfo'
 import PostCreate from './PostCreate/PostCreate'
 import PostList from './PostList/PostList'
 
-const Profile = ({state, addPost, isAuth, setNewPostText}) => {
+const Profile = ({state, isAuth, ownProfile, addPost, saveProfile, setNewPostText}) => {
+
+  const {follow, followers, friends, ...profileData} = state.info
+
   return (
     <>
-      <ProfileInfo {...state.info} />
+      <ProfileInfo
+        ownProfile={ownProfile}
+        isSavingProfile={state.saving}
+        saveProfile={saveProfile}
+        {...profileData}
+      />
 
       {
         isAuth && <PostCreate
