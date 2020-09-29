@@ -1,5 +1,9 @@
 import React from 'react'
-import {createPortal} from 'react-dom'
+import { reduxForm, Field } from 'redux-form'
+import { createPortal } from 'react-dom'
+
+import { notNull, maxLength } from 'utils/validators'
+import { InputText } from 'components/Common/FormFields'
 
 import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 
@@ -8,33 +12,25 @@ import l_css from './ProfileSettings.module.css'
 
 const css = {...g_css, ...l_css}
 
+const validate = {
+  name: [notNull('ENTER YOUR NAME'), maxLength(20)],
+  status: [maxLength(50)],
+  country: [maxLength(30)],
+  city: [maxLength(20)],
+  education: [maxLength(20)],
+  website: [maxLength(50)],
+  dob: [maxLength(10)]
+}
+
 /**
  * @param props.saveProfile {function}
- */
+*/
 
 class ProfileSettings extends React.Component {
 
   constructor(props) {
     super(props)
-
-    this.state = ProfileSettings.createState(this.props)
-    this.initialState = {...this.state}
-
     this.el = document.createElement('div')
-    this.inputHandler = this.inputHandler.bind(this)
-    this.saved = this.saved.bind(this)
-  }
-
-  static createState(data) {
-    return {
-      name: data.name || '',
-      status: data.status || '',
-      country: data.location.country || '',
-      city: data.location.city || '',
-      education: data.education || '',
-      website: data.website || '',
-      dob: data.dob || ''
-    }
   }
 
   componentDidMount() {
@@ -46,43 +42,26 @@ class ProfileSettings extends React.Component {
     this.portal.removeChild(this.el)
   }
 
-  inputHandler(e) {
-    this.setState({[e.target.id]: e.target.value})
-  }
-
   close() {
-    this.setState(this.initialState)
-    this.props.toggleSS()
-  }
-
-  save() {
-    this.props.saveProfile(this.state, this.saved)
-  }
-
-  saved(response) {
-    this.setState(
-      ProfileSettings.createState(response),
-      () => { this.initialState = {...this.state} }
-    )
+    this.props.reset()
     this.props.toggleSS()
   }
 
   render() {
-    const {editMode, ownProfile, isSavingProfile} = this.props
+    const { editMode, ownProfile, isSavingProfile, handleSubmit, onSubmit } = this.props
 
-    const inputs = Object.keys(this.state)
-      .map((name, order) => {
-        const value = this.state[name]
-        const handler = this.inputHandler
-        return <InsertInput key={order} name={name} value={value} handler={handler}/>
-      })
+    const inputs = Object.keys(this.props.initialValues)
+      .map((name, order) => <InsertInput name={name} key={order}/>)
 
     let className = css.profile_settings
     if (editMode) className += ' ' + css.edit_mode
     if (isSavingProfile) className += ' ' + css.cc
 
     return createPortal(
-      <div className={className}>
+      <form
+        onSubmit={handleSubmit(formData => onSubmit(formData, this.close.bind(this)))}
+        className={className}
+      >
         <PreloadContent
           isLoading={isSavingProfile}
           noContent={!ownProfile}
@@ -90,35 +69,30 @@ class ProfileSettings extends React.Component {
           clearContent={true}
         >
           <div className={css.buttons}>
-            <div onClick={() => this.close()} className={css.button}>close</div>
-            <div onClick={() => this.save()} className={css.button}>SAVE</div>
+            <button type='button' onClick={() => this.close()} className={css.button}>
+              CLOSE</button>
+            <button type='submit' className={css.button}>
+              SAVE</button>
           </div>
-          {inputs}
+          {
+            inputs
+          }
         </PreloadContent>
-      </div>,
+      </form>,
       this.el
     )
   }
 }
 
-const InsertInput = ({name, value, handler}) => {
-
-  let className = `${css.input_text} ${css.settings_input}`
-  if (name === 'status')
-    className = `${css.input_text} ${css.settings_input_long}`
-
-  return (
-    <div className={className}>
-      <input
-        id={name}
-        type='text'
-        value={value}
-        onChange={handler}
-        className={value ? css.filled : null}
-      />
-      <label>{name === 'dob' ? 'date of birth' : name}</label>
-    </div>
-  )
+const InsertInput = ({ name }) => {
+  return <Field
+            name={name}
+            type='text'
+            label={name === 'dob' ? 'date of birth' : name}
+            extraClass={css.settings_input}
+            component={InputText}
+            validate={validate[name]}
+          />
 }
 
-export default ProfileSettings
+export default reduxForm({form: 'profileSettings', enableReinitialize: true})(ProfileSettings)

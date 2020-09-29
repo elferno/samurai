@@ -1,11 +1,13 @@
-import {API_profile} from 'api/api'
+import React from 'react'
+import { reset } from 'redux-form'
+import { API_profile } from 'api/api'
+
 
 const
   ADD_POST = 'profile:ADD-POST',
   RESET_PAGE = 'profile:RESET-PAGE',
   SET_PROFILE = 'profile:SET-PROFILE',
   SET_CURRENT_ID = 'profile:SET-CURRENT-ID',
-  SET_NEW_POST_TEXT = 'profile:SET-NEW-POST-TEXT',
   SET_SAVING_PROFILE = 'profile:SET-SAVING-PROFILE'
 
 
@@ -21,8 +23,7 @@ const initialState = {
                           // чтобы менять содержимое страницы, если он вдруг изменится
                           // типа URL то при этом меняется, но вот <Route просто
                           // переиспользует созданный ранее инстанс класса ProfileContainer
-  saving: false,
-  newPostText: ''
+  saving: false
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -35,9 +36,10 @@ const profileReducer = (state = initialState, action) => {
         posts: [...state.posts].concat({
           id: state.posts.length,
           likes: 0,
-          message: state.newPostText
-        }),
-        newPostText: ''
+          message: action.text
+            .split('\n')
+            .map((text, i) => <p key={i}>{text}</p>)
+        })
       }
 
     case SET_PROFILE:
@@ -57,12 +59,6 @@ const profileReducer = (state = initialState, action) => {
         ...initialState
       }
 
-    case SET_NEW_POST_TEXT:
-      return {
-        ...state,
-        newPostText: action.text
-      }
-
     case SET_SAVING_PROFILE:
       return {
         ...state,
@@ -75,8 +71,7 @@ const profileReducer = (state = initialState, action) => {
 }
 
 // actions
-export const setNewPostText = (text) => ({type: SET_NEW_POST_TEXT, text})
-export const addPost = () => ({type: ADD_POST})
+export const addPostAC = (text) => ({type: ADD_POST, text})
 export const resetPage = () => ({type: RESET_PAGE})
 export const setProfile = (info) => ({type: SET_PROFILE, info})
 export const setCurrentId = (id) => ({type: SET_CURRENT_ID, id})
@@ -84,6 +79,11 @@ export const setSavingProfile = (saving) => ({type: SET_SAVING_PROFILE, saving})
 
 
 // thunks
+export const addPost = (formData, formName) => (dispatch) => {
+  dispatch(reset(formName))
+  dispatch(addPostAC(formData.text))
+}
+
 export const setProfileAPI = (id) => (dispatch) => {
 
   dispatch(setCurrentId(id))
@@ -105,13 +105,13 @@ export const saveProfileAPI = (data, callback) => (dispatch) => {
     .then(data => {
       if (data) {
         dispatch(setProfile(data.info))
-        callback(data.info)
+        callback(data.info.userInfo)
       }
       setTimeout(() => dispatch(setSavingProfile(false)), 100)
     })
 }
 
-export const cancelAPI = () => () => {
+export const cancelProfileAPI = () => () => {
   API_profile.cancelSetProfile()
   API_profile.cancelSaveProfile()
 }

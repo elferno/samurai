@@ -1,52 +1,65 @@
 import React from 'react'
+import {Field, reduxForm} from 'redux-form'
+
+import {notNull} from 'utils/validators'
+import {InputText, InputCheck} from 'components/Common/FormFields'
 
 import g_css from 'App.module.css'
 import l_css from './Login.module.css'
+
 const css = {...g_css, ...l_css}
 
-const Login = ({ login, pass, stay, makeLogin, text, checkbox }) => {
-  return (
-    <>
-      <div className={css.input_text}>
-        <input
-          type='text'
-          value={login}
-          className={login ? css.filled : null}
-          onChange={(e) => text('login', e)}
-        />
-        <label>login</label>
-      </div>
+const validate = {
+  login: [notNull('ENTER LOGIN')],
+  pass: [notNull('ENTER PASSWORD')]
+}
 
-      <div className={css.input_text}>
-        <input
-          type='password'
-          value={pass}
-          className={pass ? css.filled : null}
-          onChange={(e) => text('pass', e)}
-          onKeyPress={(e) => {if (e.key === 'Enter') makeLogin()}}
-        />
-        <label>password</label>
+const Login = (props) => {
+
+  if (props.error)
+    return (
+      <div className={`${css.cc} ${css.cc_column}`}>
+        <div>{props.error}</div>
+        <div
+          className={`${css.button} ${css.accept_error}`}
+          onClick={() => props.setLoginError(null)}
+        >
+          OK
+        </div>
       </div>
+    )
+
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <Field
+        name='login'
+        type='text'
+        label='login'
+        component={InputText}
+        validate={validate.login}
+      />
+
+      <Field
+        name='pass'
+        type='password'
+        label='password'
+        component={InputText}
+        validate={validate.pass}
+      />
 
       <div className={css.settings}>
-        <div className={css.input_checkbox}>
-          <input
-            id='stayIn'
-            type='checkbox'
-            value={stay}
-            onChange={checkbox}
-          />
-          <label htmlFor="stayIn">stay in</label>
-        </div>
-        <div
-          className={`${css.button} ${css.login_button}`}
-          onClick={makeLogin}
-        >
-          LOGIN
-        </div>
+        <Field
+          id='stay'
+          name='stay'
+          type='checkbox'
+          label='stay in'
+          component={InputCheck}
+        />
+
+        <button className={`${css.button} ${css.login_button}`}>LOGIN</button>
       </div>
-    </>
+    </form>
   )
 }
 
-export default Login
+export default reduxForm({form: 'login'})(Login)

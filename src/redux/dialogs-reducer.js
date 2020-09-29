@@ -1,8 +1,8 @@
 import React from 'react'
+import { reset } from 'redux-form'
 
 const
-  ADD_MESSAGE = 'dialogs:ADD-MESSAGE',
-  SET_NEW_MESSAGE_TEXT = 'dialogs:SET-NEW-MESSAGE-TEXT'
+  ADD_MESSAGE = 'dialogs:ADD-MESSAGE'
 
 
 // state.dialogs.
@@ -20,9 +20,7 @@ const initialState = {
     {id: 3, name: 'Sam'},
     {id: 4, name: 'Eby'},
     {id: 5, name: 'Erny'}
-  ],
-
-  newMessageText: ''
+  ]
 }
 
 const dialogsReducer = (state = initialState, action) => {
@@ -34,17 +32,10 @@ const dialogsReducer = (state = initialState, action) => {
         ...state,
         messages: [...state.messages].concat({
           id: state.messages.length,
-          text: state.newMessageText
+          text: action.text
             .split('\n')
             .map((text, i) => <p key={i}>{text}</p>)
-        }),
-        newMessageText: ''
-      }
-
-    case SET_NEW_MESSAGE_TEXT:
-      return {
-        ...state,
-        newMessageText: action.text
+        })
       }
 
     default:
@@ -52,13 +43,11 @@ const dialogsReducer = (state = initialState, action) => {
   }
 }
 
-export const setNewMessageText = (text) => ({
-  type: SET_NEW_MESSAGE_TEXT,
-  text
-})
+const addMessageAC = (text) => ({type: ADD_MESSAGE, text })
 
-export const addMessage = () => ({
-  type: ADD_MESSAGE
-})
+export const addMessage = (formData, formName) => (dispatch) => {
+  dispatch(reset(formName))
+  dispatch(addMessageAC(formData.text))
+}
 
 export default dialogsReducer

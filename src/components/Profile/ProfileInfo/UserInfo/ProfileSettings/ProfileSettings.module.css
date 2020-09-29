@@ -27,8 +27,8 @@
   bottom: var(--mm);
 }
 
-.buttons div:first-child {
-  margin-right: calc(var(--mm) + 1px);
+.buttons button:first-child {
+  margin-right: calc(var(--mm) - 4px);
   background-color: var(--off-blue);
 }
 
@@ -38,7 +38,7 @@
   margin-left: var(--mm);
 }
 
-.settings_input_long {
+.profile_settings .settings_input:nth-child(3) {
   width: calc(67.6% - var(--mm) * 2);
   display: inline-block;
   margin-left: var(--mm);
@@ -58,11 +58,11 @@
     width: calc(100% - var(--mm) * 2);
   }
 
-  .buttons div:first-child {
+  .buttons button:first-child {
     float: left;
   }
 
-  .buttons div:last-child {
+  .buttons button:last-child {
     float: right;
   }
 
@@ -76,7 +76,7 @@
     min-width: calc(50% - var(--mm) * 1.5);
   }
 
-  .settings_input_long {
+  .profile_settings .settings_input:nth-child(3) {
     min-width: calc(100% - var(--mm) * 2);
   }
 }

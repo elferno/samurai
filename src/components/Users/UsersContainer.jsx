@@ -6,7 +6,7 @@ import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 
 import { setFriendToAPI } from 'redux/friends-reducer'
 import { setFollowToAPI } from 'redux/follow-reducer'
-import { resetPage, setPageToNext, getUsersAPI, updateUsersAPI, cancelAPI }
+import { resetPage, setPageToNext, getUsersAPI, updateUsersAPI, cancelUsersAPI }
   from 'redux/users-reducer'
 
 class UsersAPI extends React.Component {
@@ -23,7 +23,7 @@ class UsersAPI extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.cancelAPI()
+    this.props.cancelUsersAPI()
     this.props.resetPage()
   }
 
@@ -80,7 +80,7 @@ const mapDispatchToProps = {
   updateUsersAPI,
   setFollowToAPI,
   setFriendToAPI,
-  cancelAPI
+  cancelUsersAPI
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersAPI)

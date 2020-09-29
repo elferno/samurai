@@ -17,29 +17,29 @@ import css from 'App.module.css'
 
 import {
   setLoginError,
-
-  authAPI,
   loginAPI,
   logoutAPI
 } from
     'redux/auth-reducer'
 
-class AppAPI extends React.Component {
+import {
+  initAppAPI
+} from
+    'redux/app-reducer'
+
+class App extends React.Component {
   componentDidMount() {
-    setTimeout(() => {
-      if (this.props.auth.isAuth === null)
-        this.props.authAPI()
-    }, 1000)
+    this.props.initAppAPI()
   }
 
   render() {
-    const canShowContent = this.props.auth.isAuth !== null
+    const initialized = this.props.initialized !== false
 
     return (
       <>
-        <GlobalLoading hide={canShowContent}/>
+        <GlobalLoading hideWhen={initialized}/>
 
-        {canShowContent &&
+        {initialized &&
         <Content
           auth={this.props.auth}
           login={this.props.loginAPI}
@@ -52,6 +52,7 @@ class AppAPI extends React.Component {
 }
 
 const Content = ({auth, login, logout, setLoginError}) => {
+
   return (
     <div className={css.wrapper}>
       <Header auth={auth} logout={logout}/>
@@ -71,15 +72,14 @@ const Content = ({auth, login, logout, setLoginError}) => {
   )
 }
 
-const App = connect((state) => ({
-  auth: state.auth
+export default connect((state) => ({
+  auth: state.auth,
+  initialized: state.app.initialized
 }), {
-  setLoginError,
+  initAppAPI,
 
-  authAPI,
+  setLoginError,
   loginAPI,
   logoutAPI
 })
-  (AppAPI)
-
-export default App
+  (App)

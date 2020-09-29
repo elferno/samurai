@@ -108,7 +108,7 @@ export const updateUsersAPI = (page, limit) => (dispatch) => {
     })
 }
 
-export const cancelAPI = () => () => {
+export const cancelUsersAPI = () => () => {
   API_users.cancelGetUsers()
 }
 

@@ -1,20 +1,11 @@
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 
 import Editor from './Editor'
-import {
-  setNewMessageText,
-  addMessage
-}
-from
-  'redux/dialogs-reducer'
+import { addMessage } from 'redux/dialogs-reducer'
 
-const mapStateToProps = (state) => ({
-  newMessageText: state.dialogs.newMessageText
+const EditorContainer = connect(null, {
+  onSubmit: formData => addMessage(formData, 'sendMessage')
 })
-
-const EditorContainer = connect(mapStateToProps, {
-  setNewMessageText,
-  addMessage
-})(Editor)
+  (Editor)
 
 export default EditorContainer

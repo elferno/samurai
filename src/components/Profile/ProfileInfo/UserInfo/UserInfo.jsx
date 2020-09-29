@@ -22,8 +22,8 @@ class UserInfo extends React.Component {
 
   render() {
 
-    const em = this.state.editMode
-    const { dob, name, status, website, location, education, ownProfile } = this.props
+    const { userInfo, ownProfile, saveProfile, isSavingProfile } = this.props
+    const { dob, name, status, website, country, city, education } = userInfo
 
     return (
       <div className={css.info}>
@@ -31,14 +31,22 @@ class UserInfo extends React.Component {
           <div onClick={this.toggleSS} className={`${css.edit_info} ${css.cc}`}>✎</div>
         }
         { ownProfile &&
-          <ProfileSettings toggleSS={this.toggleSS} editMode={em} {...this.props}/>
+          <ProfileSettings
+            initialValues={userInfo}
+            onSubmit={saveProfile}
+            ownProfile={ownProfile}
+            toggleSS={this.toggleSS}
+            saveProfile={saveProfile}
+            editMode={this.state.editMode}
+            isSavingProfile={isSavingProfile}
+          />
         }
         <h1 className={css.ff_header}>{name}</h1>
         <div className={css.status}>{status || <i>your status could be here</i>}</div>
         <div className={css.info_content}>
           <p><b>Date of birth</b><i>:</i><u>{dob}</u></p>
-          <p><b>Country</b><i>:</i><u>{location.country}</u></p>
-          <p><b>City</b><i>:</i><u>{location.city}</u></p>
+          <p><b>Country</b><i>:</i><u>{country}</u></p>
+          <p><b>City</b><i>:</i><u>{city}</u></p>
           <p><b>Education</b><i>:</i><u>{education || 'none'}</u></p>
           <p><b>Web-site</b><i>:</i><u><WebLink website={website} noContent={'none'}/></u></p>
         </div>

@@ -1,23 +1,22 @@
-import { API_auth } from 'api/api'
-import { setFriendsBar } from 'redux/friends-reducer'
+import {API_auth} from 'api/api'
+import { stopSubmit } from 'redux-form'
+import {setFriendsBar} from 'redux/friends-reducer'
 
 const SET_AUTH = 'auth:SET-AUTH',
-      SET_LOGIN_ERROR = 'auth:SET-LOGIN-ERROR',
-      SET_FETCHING_AUTH = 'auth:SET-FETCHING-AUTH'
+  SET_FETCHING_AUTH = 'auth:SET-FETCHING-AUTH'
 
 
 // state.auth.
 const initialState = {
-  fetching:   false, // true - идет запрос login/logout
-  error:      null,  // 1 - user not found
-                     // 2 - input login and pass
-  isAuth:     null,  // null  - need ask auth from server
-                     // false - not authorized
-                     // true  - authorized
+  fetching: false, // true - идет запрос login/logout
+
+  isAuth: null,  // null  - need ask auth from server
+                 // false - not authorized
+                 // true  - authorized
   userInfo: {
-    userID:   null,  // user's uniq ID
+    userID: null,  // user's uniq ID
     userName: null,  // user's shown name
-    havePH:   null   // true -> user has photo
+    havePH: null   // true -> user has photo
   }
 }
 
@@ -34,11 +33,6 @@ const authReducer = (state = initialState, action) => {
         ...state,
         fetching: action.fetching
       }
-    case SET_LOGIN_ERROR:
-      return {
-        ...state,
-        error: action.error
-      }
     default:
       return state
   }
@@ -48,12 +42,23 @@ const authReducer = (state = initialState, action) => {
 // actions
 export const setAuth = (userInfo) => ({type: SET_AUTH, userInfo})
 export const setFetchingAuth = (fetching) => ({type: SET_FETCHING_AUTH, fetching})
-export const setLoginError = (error) => ({type: SET_LOGIN_ERROR, error})
-
 
 // thunks
+export const setLoginError = (errorCode) => (dispatch) => {
+
+  let error = null
+
+  switch (errorCode) {
+    case 1: error = 'wrong login or password'; break
+    case 2: error = 'please, specify login and password'; break
+    default: break
+  }
+
+  dispatch(stopSubmit('login', {_error: error}))
+}
+
 export const authAPI = () => (dispatch) => {
-  API_auth.auth()
+  return API_auth.auth()
     .then(data => {
       dispatch(setAuth(data.userInfo))
       dispatch(setFriendsBar(data.friendsBar, data.totalFriends))
@@ -68,7 +73,7 @@ export const loginAPI = (login, pass, stay) => (dispatch) => {
       dispatch(setFetchingAuth(false))
 
       if (data.error) {
-        dispatch(setLoginError(data.error))
+        setLoginError(data.error)(dispatch)
       } else {
         dispatch(setAuth(data.userInfo))
         dispatch(setFriendsBar(data.friendsBar, data.totalFriends))

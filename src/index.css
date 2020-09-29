@@ -82,5 +82,5 @@ body::-webkit-scrollbar-button:vertical:increment {
 }
 body::-webkit-scrollbar { width: 12px; }
 body::-webkit-scrollbar-track { background: var(--gray); }
-body::-webkit-scrollbar-thumb { border-radius: 2px; -webkit-box-shadow: inset 0 0 3px 1px var(--dark-blue); }
+body::-webkit-scrollbar-thumb { border-radius: var(--r); -webkit-box-shadow: inset 0 0 3px 1px var(--dark-blue); }
 

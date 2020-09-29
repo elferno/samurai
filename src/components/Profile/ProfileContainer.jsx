@@ -14,11 +14,10 @@ import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 import {
   addPost,
   resetPage,
-  setNewPostText,
 
   setProfileAPI,
   saveProfileAPI,
-  cancelAPI
+  cancelProfileAPI
 } from
     'redux/profile-reducer'
 
@@ -29,14 +28,17 @@ class ProfileAPI extends React.Component {
     this.props.setProfileAPI(this.url_id)
   }
 
+  unsetProfile() {
+    this.props.cancelProfileAPI()
+    this.props.resetPage()
+  }
+
   componentDidMount() {
     this.setProfile()
   }
 
   componentWillUnmount() {
-    this.props.cancelAPI()
-    this.props.match.params.id = null
-    this.props.resetPage()
+    this.unsetProfile()
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -54,7 +56,7 @@ class ProfileAPI extends React.Component {
       reset = true
 
     if (reset) {
-      this.props.resetPage()
+      this.unsetProfile()
       this.setProfile()
     }
   }
@@ -63,8 +65,7 @@ class ProfileAPI extends React.Component {
     const {
       auth,
       state,
-      addPost,
-      setNewPostText
+      addPost
     } = this.props
 
     const ownProfile = this.url_id === 'own'
@@ -83,8 +84,7 @@ class ProfileAPI extends React.Component {
           addPost={addPost}
           isAuth={auth.isAuth}
           ownProfile={ownProfile}
-          saveProfile={this.props.saveProfileAPI}
-          setNewPostText={setNewPostText}
+          saveProfile={(formData, callback) => this.props.saveProfileAPI(formData, callback)}
         />
       </PreloadContent>
     )
@@ -98,11 +98,10 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   addPost,
   resetPage,
-  setNewPostText,
 
   setProfileAPI,
   saveProfileAPI,
-  cancelAPI
+  cancelProfileAPI
 }
 
 export default compose(

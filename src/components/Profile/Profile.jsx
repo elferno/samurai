@@ -17,12 +17,8 @@ const Profile = ({state, isAuth, ownProfile, addPost, saveProfile, setNewPostTex
         {...profileData}
       />
 
-      {
-        isAuth && <PostCreate
-          addPost={addPost}
-          setNewPostText={setNewPostText}
-          newPostText={state.newPostText}
-        />
+      { isAuth &&
+        <PostCreate onSubmit={formData => addPost(formData, 'sendPost')}/>
       }
 
       <PostList posts={state.posts}/>
