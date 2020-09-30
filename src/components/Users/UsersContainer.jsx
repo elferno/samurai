@@ -9,6 +9,10 @@ import { setFollowToAPI } from 'redux/follow-reducer'
 import { resetPage, setPageToNext, getUsersAPI, updateUsersAPI, cancelUsersAPI }
   from 'redux/users-reducer'
 
+import * as US_SL from 'selectors/users-selectors'
+import * as FR_SL from 'selectors/friends-selector'
+import * as FW_SL from 'selectors/follow-selector'
+
 class UsersAPI extends React.Component {
   setUsers() {
     this.props.getUsersAPI(this.props.page, this.props.limit)
@@ -60,17 +64,17 @@ class UsersAPI extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  totalUsers: state.users.totalUsers,
-  isLoading: state.users.isLoading,
-  users: state.users.users,
-  limit: state.users.limit,
-  page: state.users.page,
+  totalUsers: US_SL.getTotalUsers(state),
+  isLoading: US_SL.getIsLoading(state),
+  users: US_SL.getUsers(state),
+  limit: US_SL.getUsersLimit(state),
+  page: US_SL.getUsersPage(state),
 
-  friendsList: state.friends.friendsList,
-  friendIsFetching: state.friends.friendIsFetching,
+  friendsList: FR_SL.getFriendsList(state),
+  friendIsFetching: FR_SL.getFriendIsFetching(state),
 
-  followList: state.follow.followList,
-  followIsFetching: state.follow.followIsFetching
+  followList: FW_SL.getFollowList(state),
+  followIsFetching: FW_SL.getFollowIsFetching(state)
 })
 
 const mapDispatchToProps = {
