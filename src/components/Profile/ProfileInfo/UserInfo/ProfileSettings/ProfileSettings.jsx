@@ -24,6 +24,7 @@ const validate = {
 
 /**
  * @param props.saveProfile {function}
+ * @param props.toggleSS {function}
 */
 
 class ProfileSettings extends React.Component {

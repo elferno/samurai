@@ -4,15 +4,15 @@ import ProfileInfo from './ProfileInfo/ProfileInfo'
 import PostCreate from './PostCreate/PostCreate'
 import PostList from './PostList/PostList'
 
-const Profile = ({state, isAuth, ownProfile, addPost, saveProfile, setNewPostText}) => {
+const Profile = ({profile, isAuth, ownProfile, addPost, saveProfile, setNewPostText}) => {
 
-  const {follow, followers, friends, ...profileData} = state.info
+  const {follow, followers, friends, ...profileData} = profile.info
 
   return (
     <>
       <ProfileInfo
         ownProfile={ownProfile}
-        isSavingProfile={state.saving}
+        isSavingProfile={profile.saving}
         saveProfile={saveProfile}
         {...profileData}
       />
@@ -21,7 +21,7 @@ const Profile = ({state, isAuth, ownProfile, addPost, saveProfile, setNewPostTex
         <PostCreate onSubmit={formData => addPost(formData, 'sendPost')}/>
       }
 
-      <PostList posts={state.posts}/>
+      <PostList posts={profile.posts}/>
     </>
   )
 }

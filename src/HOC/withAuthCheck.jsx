@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 
 const withAuthCheck = (Component) => {
-
   class AuthCheck extends React.Component {
     render() {
       if (this.props.isAuth === false)
