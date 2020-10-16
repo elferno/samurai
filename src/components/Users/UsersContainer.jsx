@@ -1,66 +1,52 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 
 import Users from './Users'
 import PreloadContent from 'components/Common/PreloadContent/PreloadContent'
 
-import { setFriendToAPI } from 'redux/friends-reducer'
-import { setFollowToAPI } from 'redux/follow-reducer'
-import { resetPage, setPageToNext, getUsersAPI, updateUsersAPI, cancelUsersAPI }
+import {setFriendToAPI} from 'redux/friends-reducer'
+import {setFollowToAPI} from 'redux/follow-reducer'
+import {resetPage, setPageToNext, getUsersAPI, updateUsersAPI, cancelUsersAPI}
   from 'redux/users-reducer'
 
 import * as US_SL from 'selectors/users-selectors'
 import * as FR_SL from 'selectors/friends-selector'
 import * as FW_SL from 'selectors/follow-selector'
 
-class UsersAPI extends React.Component {
-  setUsers() {
-    this.props.getUsersAPI(this.props.page, this.props.limit)
-  }
+const UsersAPI = (props) => {
 
-  updateUsers() {
-    this.props.updateUsersAPI(this.props.page, this.props.limit)
-  }
+  // var
+  const { page, limit } = props
+  const { users, totalFriends, totalFollow } = props
+  const { getUsersAPI, updateUsersAPI, cancelUsersAPI, resetPage } = props
 
-  componentDidMount() {
-    this.setUsers()
-  }
+  // effects
+  useEffect(() => {
+    if (page === 0) getUsersAPI(page, limit)  // load first page
+    else updateUsersAPI(page, limit)          // upload more pages
+  }, [page, limit, getUsersAPI, updateUsersAPI])
 
-  componentWillUnmount() {
-    this.props.cancelUsersAPI()
-    this.props.resetPage()
-  }
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // switch "page" (click "upload more") -> upload users
-    if (
-      this.props.users !== null &&        // not initial page load
-      prevProps.page !== this.props.page  // page has changed
-    )
-      this.updateUsers()
-
-    // login / logout
-    if (prevProps.isAuth !== this.props.isAuth) {
-      this.props.resetPage()
-      this.setUsers()
+  useEffect(() => {
+    return () => {
+      cancelUsersAPI()
+      resetPage()
     }
-  }
+  }, [cancelUsersAPI, resetPage])
 
-  render() {
-    return (
-      <PreloadContent
-        isLoading={this.props.users === null}
-        noContent={this.props.users === false}
-        noContentFiller={'no users found'}
-      >
-        <Users
-          setFriendTo={this.props.setFriendToAPI}
-          setFollowTo={this.props.setFollowToAPI}
-          {...this.props}
-        />
-      </PreloadContent>
-    )
-  }
+  // render
+  return (
+    <PreloadContent
+      isLoading={users === null || totalFriends === null || totalFollow === null}
+      noContent={props.users === false}
+      noContentFiller={'no users found'}
+    >
+      <Users
+        setFriendTo={props.setFriendToAPI}
+        setFollowTo={props.setFollowToAPI}
+        {...props}
+      />
+    </PreloadContent>
+  )
 }
 
 const mapStateToProps = (state) => ({
@@ -71,9 +57,11 @@ const mapStateToProps = (state) => ({
   page: US_SL.getUsersPage(state),
 
   friendsList: FR_SL.getFriendsList(state),
+  totalFriends: FR_SL.getTotalFriends(state),
   friendIsFetching: FR_SL.getFriendIsFetching(state),
 
   followList: FW_SL.getFollowList(state),
+  totalFollow: FW_SL.getTotalFollow(state),
   followIsFetching: FW_SL.getFollowIsFetching(state)
 })
 

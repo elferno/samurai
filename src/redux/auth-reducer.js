@@ -1,5 +1,5 @@
 import {API_auth} from 'api/api'
-import { stopSubmit } from 'redux-form'
+import {stopSubmit} from 'redux-form'
 import {setFriendsBar} from 'redux/friends-reducer'
 
 const SET_AUTH = 'auth:SET-AUTH',
@@ -57,39 +57,38 @@ export const setLoginError = (errorCode) => (dispatch) => {
   dispatch(stopSubmit('login', {_error: error}))
 }
 
-export const authAPI = () => (dispatch) => {
-  return API_auth.auth()
-    .then(data => {
-      dispatch(setAuth(data.userInfo))
-      dispatch(setFriendsBar(data.friendsBar, data.totalFriends))
-    })
+export const authAPI = () => async (dispatch) => {
+  const data = await API_auth.auth()
+
+  dispatch(setAuth(data.userInfo))
+  dispatch(setFriendsBar(data.friendsBar, data.totalFriends))
 }
 
-export const loginAPI = (login, pass, stay) => (dispatch) => {
+export const loginAPI = (login, pass, stay) => async (dispatch) => {
+
   dispatch(setFetchingAuth(true))
 
-  API_auth.login(login, pass, stay)
-    .then(data => {
-      dispatch(setFetchingAuth(false))
+  const data = await API_auth.login(login, pass, stay)
 
-      if (data.error) {
-        setLoginError(data.error)(dispatch)
-      } else {
-        dispatch(setAuth(data.userInfo))
-        dispatch(setFriendsBar(data.friendsBar, data.totalFriends))
-      }
-    })
+  dispatch(setFetchingAuth(false))
+
+  if (data.error) {
+    setLoginError(data.error)(dispatch)
+    return null
+  }
+
+  dispatch(setAuth(data.userInfo))
+  dispatch(setFriendsBar(data.friendsBar, data.totalFriends))
 }
 
-export const logoutAPI = () => (dispatch) => {
+export const logoutAPI = () => async (dispatch) => {
   dispatch(setFetchingAuth(true))
 
-  API_auth.logout()
-    .then(() => {
-      dispatch(setFetchingAuth(false))
-      dispatch(setAuth(false))
-      dispatch(setFriendsBar())
-    })
+  await API_auth.logout()
+
+  dispatch(setFetchingAuth(false))
+  dispatch(setAuth(false))
+  dispatch(setFriendsBar())
 }
 
 export default authReducer

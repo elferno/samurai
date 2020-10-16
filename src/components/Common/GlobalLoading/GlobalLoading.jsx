@@ -6,9 +6,9 @@ import{  LoadingIcon } from 'components/Common/Loading/Loading'
 
 const css = {...g_css, ...l_css}
 
-const GlobalLoading = ({ hideWhen }) => {
+const GlobalLoading = ({ initialized }) => {
   return (
-    <div className={`${css.cover} ${hideWhen ? css.cover_hide : null}`}>
+    <div className={`${css.cover} ${initialized ? css.cover_hide : null}`}>
       <LoadingIcon/>
     </div>
   )

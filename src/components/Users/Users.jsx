@@ -9,12 +9,12 @@ const css = {...g_css, ...l_css}
 
 const Users = (props) => {
 
-  const { isAuth, isLoading, setPageToNext, ...userProps } = props
+  const { isLoading, setPageToNext, ...userProps } = props
   const canUploadMore = (props.page * props.limit + props.limit) < props.totalUsers
 
   return (
     <div className={css.content_wrapper}>
-      <UserList isAuth={isAuth} {...userProps}/>
+      <UserList {...userProps}/>
       <UploadButton
         isLoading={props.totalUsers !== 0 && isLoading}
         isActive= {props.totalUsers !== 0 && !isLoading && canUploadMore}

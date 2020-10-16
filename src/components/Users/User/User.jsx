@@ -1,10 +1,13 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
+import { useAuth } from 'Context/AuthContext'
+
 import Avatar from 'components/Common/Avatar/Avatar'
 
 import g_css from 'App.module.css'
 import l_css from './User.module.css'
+
 
 const css = {...g_css, ...l_css}
 
@@ -16,8 +19,8 @@ const clickHandler = (e, callBack = false, ...param) => {
 
 const User = (props) => {
 
-  const {
-    id, isAuth, photos, name, location, status, ...userProps } = props
+  const { isAuth } = useAuth()
+  const { id, photos, name, location, status, ...userProps } = props
 
   return (
     <div className={`${css.block} ${css.user}`}>

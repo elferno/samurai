@@ -10,7 +10,7 @@ const initialState = {
   followList: [],
 
   followIsFetching: [],
-  totalFollow: 0
+  totalFollow: null
 }
 
 const followReducer = (state = initialState, action) => {
@@ -27,7 +27,7 @@ const followReducer = (state = initialState, action) => {
         totalFollow: action.totalFollow
       }
     case TOGGLE_FOLLOW_FETCHING:
-      const uid = action.followId
+      const uid = action.id
 
       return {
         ...state,
@@ -42,34 +42,26 @@ const followReducer = (state = initialState, action) => {
 
 
 // actions
-export const setFollow = (follow) => ({type: SET_FOLLOW, follow })
+export const setFollow = (follow) => ({type: SET_FOLLOW, follow})
 export const setFollowList = (followList = [], totalFollow = 0) => ({
   type: SET_FOLLOW_LIST,
   totalFollow,
   followList
 })
-export const toggleFollowFetching = (followId) => ({type: TOGGLE_FOLLOW_FETCHING, followId})
+export const toggleFollowFetching = (id) => ({type: TOGGLE_FOLLOW_FETCHING, id})
 
 
 // thunks
-export const setFollowToAPI = (followId, doFollow) => (dispatch) => {
+export const setFollowToAPI = (id, makeFollow) => async (dispatch) => {
 
-  const body = JSON.stringify({followId})
-  dispatch(toggleFollowFetching(followId))
+  const body = JSON.stringify({followId: id})
+  const method = makeFollow ? 'PATCH' : 'DELETE'
 
-  if (doFollow) {
-    API_follow.setFollowTo('PATCH', body)
-      .then(data => {
-        dispatch(toggleFollowFetching(followId))
-        dispatch(setFollow(data))
-      })
-  } else {
-    API_follow.setFollowTo('DELETE', body)
-      .then(data => {
-        dispatch(toggleFollowFetching(followId))
-        dispatch(setFollow(data))
-      })
-  }
+  dispatch(toggleFollowFetching(id))
+
+  const data = await API_follow.setFollowTo(method, body)
+  dispatch(toggleFollowFetching(id))
+  dispatch(setFollow(data))
 }
 
 

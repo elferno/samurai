@@ -66,6 +66,9 @@ export const API_users = {
 
 export const API_friends = {
   setFriendTo(method, data) {
+
+    console.log(method, data)
+
     return xml('friends.php', {method, data})
       .then(response => response.data)
   }

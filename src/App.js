@@ -1,85 +1,70 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
 import {Route} from 'react-router-dom'
 
+import withSuspense from 'HOC/withSuspense'
+
 import Header from './components/Header/Header'
 import NavBar from './components/NavBar/NavBar'
-import FriendsBarContainer from './components/FriendsBar/FriendsBarContainer'
-import ProfileContainer from './components/Profile/ProfileContainer'
-import UsersContainer from './components/Users/UsersContainer'
-import Hello from './components/Hello/Hello'
-import Dialogs from './components/Dialogs/Dialogs'
 import UsersSearch from './components/UsersSearch/UsersSearch'
+import FriendsBarContainer from './components/FriendsBar/FriendsBarContainer'
+
+import Hello from './components/Hello/Hello'
+import UsersContainer from './components/Users/UsersContainer'
 
 import GlobalLoading from 'components/Common/GlobalLoading/GlobalLoading'
 
+import {AuthProvider} from 'Context/AuthContext'
+import {initAppAPI} from 'redux/app-reducer'
+
 import css from 'App.module.css'
 
-import {
-  setLoginError,
-  loginAPI,
-  logoutAPI
-} from
-    'redux/auth-reducer'
+const ProfileContainer = React.lazy(() =>
+  import('./components/Profile/ProfileContainer'))
+const Dialogs = React.lazy(() =>
+  import('./components/Dialogs/Dialogs'))
 
-import {
-  initAppAPI
-} from
-    'redux/app-reducer'
+const App = (props) => {
 
-class App extends React.Component {
-  componentDidMount() {
-    this.props.initAppAPI()
-  }
+  const {initialized, initAppAPI} = props
 
-  render() {
-    const initialized = this.props.initialized !== false
-
-    return (
-      <>
-        <GlobalLoading hideWhen={initialized}/>
-
-        {initialized &&
-        <Content
-          auth={this.props.auth}
-          login={this.props.loginAPI}
-          logout={this.props.logoutAPI}
-          setLoginError={this.props.setLoginError}
-        />}
-      </>
-    )
-  }
-}
-
-const Content = ({auth, login, logout, setLoginError}) => {
+  useEffect(() => {
+    initAppAPI()
+  }, [initAppAPI])
 
   return (
-    <div className={css.wrapper}>
-      <Header auth={auth} logout={logout}/>
-      <NavBar auth={auth} login={login} setLoginError={setLoginError}/>
-      <UsersSearch/>
-      <FriendsBarContainer auth={auth}/>
-      <div className={css.content}>
-        <Route path='/' exact render={() => <Hello/>}/>
-        <Route path='/profile/:id?' render={() => <ProfileContainer auth={auth}/>}/>
-        <Route path='/dialogs' render={() => <Dialogs/>}/>
-        <Route path='/users' render={() => <UsersContainer isAuth={auth.isAuth}/>}/>
-        <Route path='/news'/>
-        <Route path='/music'/>
-        <Route path='/settings'/>
-      </div>
-    </div>
+    <>
+      <GlobalLoading initialized={initialized}/>
+      <Content initialized={initialized}/>
+    </>
   )
 }
 
-export default connect((state) => ({
-  auth: state.auth,
-  initialized: state.app.initialized
-}), {
-  initAppAPI,
+const Content = ({initialized}) => {
+  if (!initialized)
+    return null
 
-  setLoginError,
-  loginAPI,
-  logoutAPI
-})
-  (App)
+  return (
+    <AuthProvider>
+      <div className={css.wrapper}>
+        <Header/>
+        <NavBar/>
+        <UsersSearch/>
+        <FriendsBarContainer/>
+        <div className={css.content}>
+          <Route path='/' exact render={() => <Hello/>}/>
+          <Route path='/profile/:id?' render={withSuspense(ProfileContainer)}/>
+          <Route path='/dialogs' render={withSuspense(Dialogs)}/>
+          <Route path='/users' render={() => <UsersContainer/>}/>
+          <Route path='/news'/>
+          <Route path='/music'/>
+          <Route path='/settings'/>
+        </div>
+      </div>
+    </AuthProvider>
+  )
+}
+
+const mapStateToProps = (state) => ({initialized: state.app.initialized})
+const mapDispatchToProps = {initAppAPI}
+export default connect(mapStateToProps, mapDispatchToProps)(App)

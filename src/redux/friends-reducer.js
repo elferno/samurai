@@ -1,9 +1,9 @@
-import { API_friends } from 'api/api'
+import {API_friends} from 'api/api'
 
 const SET_FRIENDS_BAR = 'friends:SET-FRIENDS-BAR',
-      SET_FRIENDS_LIST = 'friends:SET-FRIENDS-LIST',
-      SET_FRIENDS = 'friends:SET_FRIENDS',
-      TOGGLE_FRIEND_FETCHING = 'friends:TOGGLE-FRIEND-FETCHING'
+  SET_FRIENDS_LIST = 'friends:SET-FRIENDS-LIST',
+  SET_FRIENDS = 'friends:SET_FRIENDS',
+  TOGGLE_FRIEND_FETCHING = 'friends:TOGGLE-FRIEND-FETCHING'
 
 
 // state.friends.
@@ -12,7 +12,7 @@ const initialState = {
   friendsList: [],
 
   friendIsFetching: [],
-  totalFriends: 0
+  totalFriends: null
 }
 
 const friendsReducer = (state = initialState, action) => {
@@ -38,7 +38,7 @@ const friendsReducer = (state = initialState, action) => {
       }
 
     case TOGGLE_FRIEND_FETCHING:
-      const uid = action.friendId
+      const uid = action.id
 
       return {
         ...state,
@@ -64,28 +64,20 @@ export const setFriendsList = (friendsList = [], totalFriends = 0) => ({
   totalFriends,
   friendsList
 })
-export const setFriends = (friends) => ({type: SET_FRIENDS, friends })
-export const toggleFriendFetching = (friendId) => ({type: TOGGLE_FRIEND_FETCHING, friendId})
+export const setFriends = (friends) => ({type: SET_FRIENDS, friends})
+export const toggleFriendFetching = (id) => ({type: TOGGLE_FRIEND_FETCHING, id})
 
 // thunks
-export const setFriendToAPI = (friendId, doFriend) => (dispatch) => {
+export const setFriendToAPI = (id, makeFriend) => async (dispatch) => {
 
-  const body = JSON.stringify({friendId})
-  dispatch(toggleFriendFetching(friendId))
+  const body = JSON.stringify({friendId: id})
+  const method = makeFriend ? 'PATCH' : 'DELETE'
 
-  if (doFriend) {
-    API_friends.setFriendTo('PATCH', body)
-      .then(data => {
-        dispatch(toggleFriendFetching(friendId))
-        dispatch(setFriends(data))
-      })
-  } else {
-    API_friends.setFriendTo('DELETE', body)
-      .then(data => {
-        dispatch(toggleFriendFetching(friendId))
-        dispatch(setFriends(data))
-      })
-  }
+  dispatch(toggleFriendFetching(id))
+
+  const data = await API_friends.setFriendTo(method, body)
+  dispatch(toggleFriendFetching(id))
+  dispatch(setFriends(data))
 }
 
 

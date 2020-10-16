@@ -1,4 +1,4 @@
-import { authAPI } from './auth-reducer'
+import {authAPI} from './auth-reducer'
 
 const INIT_APP = 'app:INIT-APP'
 
@@ -9,15 +9,10 @@ const initialState = {
 }
 
 const appReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case INIT_APP:
-      return {
-        ...state,
-        initialized: true
-      }
-    default:
-      return state
-  }
+  if (action.type === INIT_APP)
+    return {...state, initialized: true}
+
+  return state
 }
 
 
@@ -25,14 +20,11 @@ const appReducer = (state = initialState, action) => {
 export const initApp = () => ({type: INIT_APP})
 
 // thunks
-export const initAppAPI = () => (dispatch) => {
+export const initAppAPI = () => async (dispatch) => {
 
-  const step_0 = dispatch(authAPI())
+  await dispatch(authAPI())
 
-  Promise.all([step_0])
-    .then(() => {
-      dispatch(initApp())
-    })
+  dispatch(initApp())
 }
 
 export default appReducer

@@ -1,12 +1,19 @@
 import React from 'react'
 
+import withSuspense from 'HOC/withSuspense'
+
 import ProfileInfo from './ProfileInfo/ProfileInfo'
 import PostCreate from './PostCreate/PostCreate'
-import PostList from './PostList/PostList'
 
-const Profile = ({profile, isAuth, ownProfile, addPost, saveProfile, setNewPostText}) => {
+const PostList = React.lazy(() => import('./PostList/PostList'))
+
+const Profile = ({profile, isAuth, ownProfile, addPost, saveProfile}) => {
 
   const {follow, followers, friends, ...profileData} = profile.info
+
+  const posts = withSuspense(PostList)({
+    posts: profile.posts
+  })
 
   return (
     <>
@@ -17,11 +24,11 @@ const Profile = ({profile, isAuth, ownProfile, addPost, saveProfile, setNewPostT
         {...profileData}
       />
 
-      { isAuth &&
-        <PostCreate onSubmit={formData => addPost(formData, 'sendPost')}/>
+      {isAuth &&
+      <PostCreate onSubmit={formData => addPost(formData, 'sendPost')}/>
       }
 
-      <PostList posts={profile.posts}/>
+      {posts}
     </>
   )
 }

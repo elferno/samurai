@@ -1,6 +1,8 @@
 import React from 'react'
 import {NavLink} from 'react-router-dom'
 
+import { useAuth } from 'Context/AuthContext'
+
 import Friend from './Friend/Friend'
 import AdvBar from 'components/Common/AdvBar/AdvBar'
 
@@ -8,13 +10,14 @@ import css from 'App.module.css'
 
 const FriendsBar = (props) => {
 
+  const { isAuth } = useAuth()
   const { totalFriends, totalFollowers = 0, totalFollow } = props
 
   return (
     <>
       <aside className={`${css.block} ${css.left_bar}`}>
         {
-          props.auth.isAuth
+          isAuth
             ? <Links tFR={totalFriends} tFS={totalFollowers} tFL={totalFollow}/>
             : <AdvBar id={0}/>
         }
