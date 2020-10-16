@@ -10,7 +10,6 @@ import UsersSearch from './components/UsersSearch/UsersSearch'
 import FriendsBarContainer from './components/FriendsBar/FriendsBarContainer'
 
 import Hello from './components/Hello/Hello'
-import UsersContainer from './components/Users/UsersContainer'
 
 import GlobalLoading from 'components/Common/GlobalLoading/GlobalLoading'
 
@@ -23,13 +22,15 @@ const ProfileContainer = React.lazy(() =>
   import('./components/Profile/ProfileContainer'))
 const Dialogs = React.lazy(() =>
   import('./components/Dialogs/Dialogs'))
+const UsersContainer = React.lazy(() =>
+  import('./components/Users/UsersContainer'))
 
 const App = (props) => {
 
   const {initialized, initAppAPI} = props
 
   useEffect(() => {
-    initAppAPI()
+    setTimeout(() => initAppAPI(), 1000)
   }, [initAppAPI])
 
   return (
@@ -55,7 +56,7 @@ const Content = ({initialized}) => {
           <Route path='/' exact render={() => <Hello/>}/>
           <Route path='/profile/:id?' render={withSuspense(ProfileContainer)}/>
           <Route path='/dialogs' render={withSuspense(Dialogs)}/>
-          <Route path='/users' render={() => <UsersContainer/>}/>
+          <Route path='/users' render={withSuspense(UsersContainer)}/>
           <Route path='/news'/>
           <Route path='/music'/>
           <Route path='/settings'/>

@@ -12,7 +12,7 @@ const styles = [
 const AdvBar = ({ id }) => {
 
   return (
-    <a href='https://cash-bot.com/ch/'>
+    <a href='https://finiko.im/'>
       <img src={banners[id]} style={styles[id]} alt=''/>
     </a>
   )

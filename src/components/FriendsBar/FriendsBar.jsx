@@ -11,7 +11,7 @@ import css from 'App.module.css'
 const FriendsBar = (props) => {
 
   const { isAuth } = useAuth()
-  const { totalFriends, totalFollowers = 0, totalFollow } = props
+  const { totalFriends, totalFollowers = 0, totalFollow = 0 } = props
 
   return (
     <>
@@ -43,17 +43,17 @@ const Links = ({tFR, tFS, tFL}) => {
     <>
       <div className={css.num_label}>
         <NavLink to='/friends' activeClassName={css.active_link}>My friends</NavLink>
-        <div><b>{tFR}</b></div>
+        <div><b>{+tFR}</b></div>
       </div>
 
       <div className={css.num_label}>
         <NavLink to='/followers' activeClassName={css.active_link}>My followers</NavLink>
-        <div><b>{tFS}</b></div>
+        <div><b>{+tFS}</b></div>
       </div>
 
       <div className={css.num_label}>
         <NavLink to='/follow' activeClassName={css.active_link}>I follow</NavLink>
-        <div><b>{tFL}</b></div>
+        <div><b>{+tFL}</b></div>
       </div>
     </>
   )

@@ -15,7 +15,6 @@ const validate = {
 }
 
 const Login = (props) => {
-
   if (props.error)
     return (
       <div className={`${css.cc} ${css.cc_column}`}>
@@ -31,6 +30,7 @@ const Login = (props) => {
 
   return (
     <form onSubmit={props.handleSubmit}>
+
       <Field
         name='login'
         type='text'

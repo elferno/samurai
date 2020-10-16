@@ -1,9 +1,11 @@
 import React from 'react'
-import Loading from 'components/Common/Loading/Loading'
+import {TransparentLoading} from 'components/Common/Loading/Loading'
 
 const withSuspense = (Component) => {
   return (props) => (
-    <React.Suspense fallback={<Loading/>}><Component {...props}/></React.Suspense>
+    <React.Suspense fallback={<TransparentLoading/>}>
+      <Component {...props}/>
+    </React.Suspense>
   )
 }
 
