@@ -15,8 +15,8 @@ const createToken = (callback) => {
   return new axios.CancelToken(f => callback(f))
 }
 
-const request = (url, method, data, cancelToken) => {
-  return xml(url, {method, data, cancelToken})
+const request = (url, method, data, cancelToken, headers = null) => {
+  return xml(url, {method, data, cancelToken, headers})
     .then(response => response.data)
     .catch(th => cancelled(th))
 }
@@ -85,11 +85,20 @@ export const API_follow = {
 
 export const API_files = {
   uploadFile(file, type) {
+    // var
     const url = 'file.php'
-    const data = JSON.stringify({file, type})
+
+    const data = new FormData()
+    data.append('file', file)
+    data.append('type', type)
+
     const cancelToken = createToken(f => this.cancelUploadFile = f)
 
-    return request(url, 'PATCH', data, cancelToken)
+    const headers = {'Content-Type': 'multipart/form-data'}
+    //
+
+    // request
+    return request(url, 'POST', data, cancelToken, headers)
   },
   cancelUploadFile(){},
 

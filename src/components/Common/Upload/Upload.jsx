@@ -23,10 +23,7 @@ const Upload = (props) => {
 
   const ref_input = useRef(null)
 
-  let uploadFile = null
-  let removeFile = null
-  let affirmRemove = null
-  let loading = null
+  let content = null
   let setClassName = className
   //
 
@@ -34,6 +31,7 @@ const Upload = (props) => {
   // state
   const [removeMode, setRemoveMode] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(false)
   //
 
 
@@ -41,55 +39,58 @@ const Upload = (props) => {
   const upload = e => {
     if (e.target.files.length) {
       setIsLoading(true)
-      submitFile(e.target.files[0], () => setIsLoading(false), 'avatar')
+      submitFile(e.target.files[0], e => uploaded(e), 'avatar')
     }
+  }
+
+  const uploaded = error => {
+    setIsLoading(false)
+    setError(error)
   }
   //
 
 
   // actions
   if (uploadText)
-    uploadFile =
+    content =
       <>
         <div onClick={() => ref_input.current.click()}>{uploadText}</div>
         <input onChange={upload} ref={ref_input} type='file'/>
+        {removeText &&
+        <div onClick={() => setRemoveMode(true)}>{removeText}</div>
+        }
       </>
 
-  if (removeText)
-    removeFile = <div onClick={() => setRemoveMode(true)}>{removeText}</div>
-
-  if (removeMode) {
-    uploadFile = null
-    removeFile = null
-    affirmRemove =
+  if (removeMode)
+    content =
       <b>
         {affirmRemoveText}
         <div className={css.button}>DELETE</div>
         <div className={css.button} onClick={() => setRemoveMode(false)}>CANCEL</div>
       </b>
-  }
 
   if (isLoading) {
-    uploadFile = null
-    removeFile = null
-    affirmRemove = null
-
     setClassName = className + ' ' + loadingClassName
+    content = <LoadingIcon isWhite={true}/>
+  }
 
-    loading = <LoadingIcon isWhite={true}/>
+  if (error) {
+    setClassName = className + ' ' + loadingClassName
+    content =
+      <b>
+        {error}
+        <div style={{
+          backgroundColor: 'var(--dark-blue)',
+          marginTop: 'var(--mm)',
+          marginBottom: 0
+        }} className={css.button} onClick={() => setError(false)}>OK</div>
+      </b>
   }
   //
 
 
   // render
-  return (
-    <div className={setClassName}>
-      {uploadFile}
-      {removeFile}
-      {affirmRemove}
-      {loading}
-    </div>
-  )
+  return <div className={setClassName}>{content}</div>
 }
 
 export default Upload

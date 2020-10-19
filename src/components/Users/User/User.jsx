@@ -24,7 +24,7 @@ const User = (props) => {
 
   return (
     <div className={`${css.block} ${css.user}`}>
-      <Avatar id={id} avatar={photos.small} size={'medium'}/>
+      <Avatar id={id} avatar={photos.avatar} size={'medium'}/>
       <UserInfo id={id} name={name} location={location} status={status}/>
       {
         isAuth

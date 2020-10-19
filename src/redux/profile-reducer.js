@@ -1,6 +1,6 @@
 import React from 'react'
-import { reset } from 'redux-form'
-import { API_profile } from 'api/api'
+import {reset} from 'redux-form'
+import {API_profile} from 'api/api'
 
 
 const
@@ -67,7 +67,6 @@ const profileReducer = (state = initialState, action) => {
       }
 
     case SET_NEW_AVATAR:
-      console.log(action.photos)
       return {
         ...state,
         info: {
@@ -96,31 +95,31 @@ export const addPost = (formData, formName) => (dispatch) => {
   dispatch(addPostAC(formData.text))
 }
 
-export const setProfileAPI = (id) => (dispatch) => {
+export const setProfileAPI = (id) => async (dispatch) => {
 
   dispatch(setCurrentId(id))
 
-  API_profile.setProfile(id)
-    .then(data => {
-      if (data)
-        dispatch(setProfile(data.info))
-    })
+  const response = await API_profile.setProfile(id)
 
+  if (!response)
+    return null
 
+  dispatch(setProfile(response.info))
 }
 
-export const saveProfileAPI = (data, callback) => (dispatch) => {
+export const saveProfileAPI = (data, callback) => async (dispatch) => {
 
   dispatch(setSavingProfile(true))
 
-  API_profile.saveProfile('patch', data)
-    .then(data => {
-      if (data) {
-        dispatch(setProfile(data.info))
-        callback(data.info.userInfo)
-      }
-      setTimeout(() => dispatch(setSavingProfile(false)), 100)
-    })
+  const response = await API_profile.saveProfile('patch', data)
+
+  if (!response)
+    return null
+
+  dispatch(setProfile(response.info))
+  callback(response.info.userInfo)
+
+  setTimeout(() => dispatch(setSavingProfile(false)), 100)
 }
 
 export const cancelProfileAPI = () => () => {

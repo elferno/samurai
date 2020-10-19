@@ -5,11 +5,14 @@ import {setNewPhotos} from './profile-reducer'
 export const submitFileAPI = (file, callback, type) => async (dispatch) => {
   const response = await API_files.uploadFile(file, type)
 
-  console.log(response)
+  if (!response)
+    return null
 
-  if (type === 'avatar') dispatch(setNewPhotos(response))
+  if (!response.error) {
+    if (type === 'avatar') dispatch(setNewPhotos(response.photos))
+  }
 
-  callback()
+  callback(response.error)
 }
 
 export const cancelFileAPI = () => () => {

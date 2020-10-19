@@ -10,8 +10,8 @@ import l_css from './ProfileInfo.module.css'
 const css = {...g_css, ...l_css}
 
 /**
- * @param photos.large {string}
- * @param photos.small {string}
+ * @param photos.banner {string}
+ * @param photos.avatar {string}
 */
 
 const ProfileInfo = ({ id, photos, ...props }) => {
@@ -20,7 +20,7 @@ const ProfileInfo = ({ id, photos, ...props }) => {
 
   return (
     <>
-      <Banner id={id} banner={photos.large} />
+      <Banner id={id} banner={photos.banner} />
 
       <div className={`${css.intro} ${css.block}`}>
         <Avatar
@@ -28,7 +28,7 @@ const ProfileInfo = ({ id, photos, ...props }) => {
           shadow={true}
           size={'large'}
           editable={ownProfile}
-          avatar={photos.small}
+          avatar={photos.avatar}
           submitFile={submitFile}
         />
         <UserInfo {...props}/>

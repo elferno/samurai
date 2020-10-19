@@ -42,15 +42,9 @@
 
 
 /* avatar edit : hovers */
-.avatar_editable:hover .avatar_edit {
-  opacity: 1;
-}
-
-.avatar_editable:hover:after {
-  opacity: 1;
-}
-
-.avatar_editable:hover .avatar_edit {
+.avatar_editable:hover .avatar_edit,
+.avatar_editable:hover:after,
+.avatar_edit div:hover {
   opacity: 1;
 }
 /* * */
@@ -72,6 +66,7 @@
 }
 
 .avatar_edit b div:first-child {
+  cursor: pointer;
   margin-bottom: var(--mm);
   background-color: var(--off-blue);
 }
