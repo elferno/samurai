@@ -37,6 +37,10 @@
   opacity: 0;
 }
 
+.white .dot { background-color: var(--white); animation-name: effect-4; }
+.white::after,
+.white::before { border: 2px solid var(--white); animation-name: effect-4; }
+
 .wrapper::after {
   animation-name: effect-3, effect-1;
   animation-duration: 5s, 2s;
@@ -79,5 +83,16 @@
   25%,
   75% {
     opacity: .5
+  }
+}
+
+@keyframes effect-4 {
+  0%,
+  100% {
+    opacity: .5
+  }
+  25%,
+  75% {
+    opacity: .8
   }
 }

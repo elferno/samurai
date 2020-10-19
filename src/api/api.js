@@ -1,5 +1,6 @@
 import axios from 'axios'
 
+// core
 const xml = axios.create({
   baseURL: 'https://fishup.fun/api/',
   withCredentials: 'include',
@@ -14,6 +15,15 @@ const createToken = (callback) => {
   return new axios.CancelToken(f => callback(f))
 }
 
+const request = (url, method, data, cancelToken) => {
+  return xml(url, {method, data, cancelToken})
+    .then(response => response.data)
+    .catch(th => cancelled(th))
+}
+//
+
+
+// instances
 export const API_auth = {
   auth() {
     return xml.get('auth.php')
@@ -32,52 +42,59 @@ export const API_auth = {
 
 export const API_profile = {
   setProfile(id) {
-
+    const url = `profile.php?id=${id}`
     const cancelToken = createToken(f => this.cancelSetProfile = f)
 
-    return xml.get(`profile.php?id=${id}`, {cancelToken})
-      .then(response => response.data)
-      .catch(th => cancelled(th))
-  }, cancelSetProfile(){},
+    return request(url, 'GET', null, cancelToken)
+  },
+  cancelSetProfile(){},
 
   saveProfile(method, data) {
-
+    const url = 'profile.php'
     const cancelToken = createToken(f => this.cancelSaveProfile = f)
 
-    return xml('profile.php', {method, data, cancelToken})
-      .then(response => response.data)
-      .catch(th => cancelled(th))
-  }, cancelSaveProfile(){}
+    return request(url, method, data, cancelToken)
+  },
+  cancelSaveProfile(){}
 }
 
 
 export const API_users = {
   getUsers(page, limit) {
-
     const url = `users.php?page=${page}&limit=${limit}`
     const cancelToken = createToken(f => this.cancelGetUsers = f)
 
-    return xml.get(url, { cancelToken })
-      .then(response => response.data)
-      .catch(th => cancelled(th))
-  }, cancelGetUsers() {}
+    return request(url, 'GET', null, cancelToken)
+  },
+  cancelGetUsers(){}
 }
 
 
 export const API_friends = {
   setFriendTo(method, data) {
-
-    console.log(method, data)
-
-    return xml('friends.php', {method, data})
-      .then(response => response.data)
+    return request('friends.php', method, data, null)
   }
 }
 
 
 export const API_follow = {
   setFollowTo(method, data) {
-    return xml('follow.php', {method, data})
-      .then(response => response.data)
+    return request('follow.php', method, data, null)
   }
 }
+
+export const API_files = {
+  uploadFile(file, type) {
+    const url = 'file.php'
+    const data = JSON.stringify({file, type})
+    const cancelToken = createToken(f => this.cancelUploadFile = f)
+
+    return request(url, 'PATCH', data, cancelToken)
+  },
+  cancelUploadFile(){},
+
+  deleteFile(file_ID, type) {
+
+  }
+}
+//

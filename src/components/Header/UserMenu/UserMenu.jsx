@@ -13,13 +13,13 @@ const UserMenu = () => {
   const { auth, logout } = useAuth()
 
   const id = auth.userInfo.userID
-  const havePH = auth.userInfo.havePH
+  const avatar = auth.userInfo.avatar
   const clickHandler = e => { e.preventDefault(); logout() }
 
   return (
     <div className={css.user_menu}>
       <NavLink to='/profile'>{auth.userInfo.userName}</NavLink>
-      <Avatar id={id} havePH={havePH} size={'mini'} shadow={true}/>
+      <Avatar id={id} avatar={avatar} size={'mini'} shadow={true}/>
       <a href='/#' className={css.logout} onClick={clickHandler}>×</a>
     </div>
   )

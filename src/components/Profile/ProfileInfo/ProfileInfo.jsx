@@ -16,12 +16,21 @@ const css = {...g_css, ...l_css}
 
 const ProfileInfo = ({ id, photos, ...props }) => {
 
+  const { ownProfile, submitFile } = props
+
   return (
     <>
-      <Banner id={id} haveBN={photos.large} />
+      <Banner id={id} banner={photos.large} />
 
       <div className={`${css.intro} ${css.block}`}>
-        <Avatar id={id} havePH={photos.small} size={'large'} shadow={true}/>
+        <Avatar
+          id={id}
+          shadow={true}
+          size={'large'}
+          editable={ownProfile}
+          avatar={photos.small}
+          submitFile={submitFile}
+        />
         <UserInfo {...props}/>
         <Statistics/>
       </div>

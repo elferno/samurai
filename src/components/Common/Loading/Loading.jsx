@@ -13,9 +13,9 @@ const Loading = () => {
   )
 }
 
-export const LoadingIcon = () => {
+export const LoadingIcon = ({isWhite}) => {
   return (
-    <div role='img' className={css.wrapper}>
+    <div role='img' className={`${css.wrapper} ${isWhite ? css.white : null}`}>
       <div className={css.dot}/>
     </div>
   )

@@ -15,8 +15,8 @@ const initialState = {
                  // true  - authorized
   userInfo: {
     userID: null,  // user's uniq ID
-    userName: null,  // user's shown name
-    havePH: null   // true -> user has photo
+    userName: null,// user's shown name
+    avatar: null   // uniqID -> user's photo / null -> no photo
   }
 }
 

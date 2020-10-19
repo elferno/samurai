@@ -7,7 +7,7 @@ import PostCreate from './PostCreate/PostCreate'
 
 const PostList = React.lazy(() => import('./PostList/PostList'))
 
-const Profile = ({profile, isAuth, ownProfile, addPost, saveProfile}) => {
+const Profile = ({profile, isAuth, ownProfile, addPost, saveProfile, submitFile}) => {
 
   const {follow, followers, friends, ...profileData} = profile.info
 
@@ -21,6 +21,7 @@ const Profile = ({profile, isAuth, ownProfile, addPost, saveProfile}) => {
         ownProfile={ownProfile}
         isSavingProfile={profile.saving}
         saveProfile={saveProfile}
+        submitFile={submitFile}
         {...profileData}
       />
 

@@ -20,6 +20,8 @@ import {
 } from
     'redux/profile-reducer'
 
+import {submitFileAPI, cancelFileAPI} from 'redux/file-reducer'
+
 const ProfileContainer = (props) => {
   // var
   const requested_ID = props.match.params.id || 'own'
@@ -32,7 +34,11 @@ const ProfileContainer = (props) => {
 
   // actions
   const setProfile = id => props.setProfileAPI(id)
-  const unsetProfile = () => { props.cancelProfileAPI(); props.resetPage() }
+  const unsetProfile = () => {
+    props.cancelProfileAPI()
+    props.cancelFileAPI()
+    props.resetPage()
+  }
 
 
   // effectors
@@ -61,6 +67,7 @@ const ProfileContainer = (props) => {
         isAuth={isAuth}
         ownProfile={ownProfile}
         saveProfile={(formData, callback) => props.saveProfileAPI(formData, callback)}
+        submitFile={(file, callback, type) => props.submitFileAPI(file, callback, type)}
       />
     </PreloadContent>
   )
@@ -75,7 +82,10 @@ const mapDispatchToProps = {
   resetPage,
   setProfileAPI,
   saveProfileAPI,
-  cancelProfileAPI
+  cancelProfileAPI,
+
+  submitFileAPI,
+  cancelFileAPI
 }
 
 export default compose(

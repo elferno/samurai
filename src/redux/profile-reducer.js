@@ -8,7 +8,8 @@ const
   RESET_PAGE = 'profile:RESET-PAGE',
   SET_PROFILE = 'profile:SET-PROFILE',
   SET_CURRENT_ID = 'profile:SET-CURRENT-ID',
-  SET_SAVING_PROFILE = 'profile:SET-SAVING-PROFILE'
+  SET_SAVING_PROFILE = 'profile:SET-SAVING-PROFILE',
+  SET_NEW_AVATAR = Symbol('profile:SET_NEW_AVATAR')
 
 
 // state.profile.
@@ -65,6 +66,16 @@ const profileReducer = (state = initialState, action) => {
         saving: action.saving
       }
 
+    case SET_NEW_AVATAR:
+      console.log(action.photos)
+      return {
+        ...state,
+        info: {
+          ...state.info,
+          photos: action.photos
+        }
+      }
+
     default:
       return state
   }
@@ -76,6 +87,7 @@ export const resetPage = () => ({type: RESET_PAGE})
 export const setProfile = (info) => ({type: SET_PROFILE, info})
 export const setCurrentId = (id) => ({type: SET_CURRENT_ID, id})
 export const setSavingProfile = (saving) => ({type: SET_SAVING_PROFILE, saving})
+export const setNewPhotos = (photos) => ({type: SET_NEW_AVATAR, photos})
 
 
 // thunks

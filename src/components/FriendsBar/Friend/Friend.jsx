@@ -8,10 +8,10 @@ import l_css from './Friend.module.css'
 
 const css = {...g_css, ...l_css}
 
-const Friend = ({id, name, havePH}) => {
+const Friend = ({id, name, avatar}) => {
   return (
     <div className={css.friend}>
-      <Avatar id={id} havePH={havePH} size={'mini'}/>
+      <Avatar id={id} avatar={avatar} size={'mini'}/>
 
       <NavLink to={`/profile/${id}`}>
         <b>{name}</b>

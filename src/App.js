@@ -30,7 +30,7 @@ const App = (props) => {
   const {initialized, initAppAPI} = props
 
   useEffect(() => {
-    setTimeout(() => initAppAPI(), 1000)
+    setTimeout(() => initAppAPI(), 0)
   }, [initAppAPI])
 
   return (
