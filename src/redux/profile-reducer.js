@@ -111,7 +111,7 @@ export const saveProfileAPI = (data, callback) => async (dispatch) => {
 
   dispatch(setSavingProfile(true))
 
-  const response = await API_profile.saveProfile('patch', data)
+  const response = await API_profile.saveProfile(data)
 
   if (!response)
     return null

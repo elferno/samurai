@@ -1,10 +1,10 @@
-import { API_users } from 'api/api'
-import { setFriendsList } from 'redux/friends-reducer'
-import { setFollowList } from 'redux/follow-reducer'
+import {API_users} from 'api/api'
+import {setFriendsList} from 'redux/friends-reducer'
+import {setFollowList} from 'redux/follow-reducer'
 
 /**
  @param {{userId:number}} data
-*/
+ */
 
 const
   RESET_PAGE = 'users:RESET-PAGE',
@@ -85,27 +85,27 @@ export const toggleIsLoading = () => ({type: TOGGLE_IS_LOADING})
 
 
 // thunks
-export const getUsersAPI = (page, limit) => (dispatch) => {
-  API_users.getUsers(page, limit)
-    .then(data => {
-      if (data) {
-        dispatch(setUsers(data.users, data.totalUsers))
-        dispatch(setFriendsList(data.friendsList, data.totalFriends))
-        dispatch(setFollowList(data.followList, data.totalFollow))
-      }
-    })
+export const getUsersAPI = (page, limit) => async (dispatch) => {
+  const response = await API_users.getUsers(page, limit)
+
+  if (!response)
+    return null
+
+  dispatch(setUsers(response.users, response.totalUsers))
+  dispatch(setFriendsList(response.friendsList, response.totalFriends))
+  dispatch(setFollowList(response.followList, response.totalFollow))
 }
 
-export const updateUsersAPI = (page, limit) => (dispatch) => {
+export const updateUsersAPI = (page, limit) => async (dispatch) => {
   dispatch(toggleIsLoading())
 
-  API_users.getUsers(page, limit)
-    .then(data => {
-      if (data) {
-        dispatch(updateUsers(data.users))
-        dispatch(toggleIsLoading())
-      }
-    })
+  const response = await API_users.getUsers(page, limit)
+
+  if (!response)
+    return null
+
+  dispatch(updateUsers(response.users))
+  dispatch(toggleIsLoading())
 }
 
 export const cancelUsersAPI = () => () => {

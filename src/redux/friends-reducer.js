@@ -71,11 +71,10 @@ export const toggleFriendFetching = (id) => ({type: TOGGLE_FRIEND_FETCHING, id})
 export const setFriendToAPI = (id, makeFriend) => async (dispatch) => {
 
   const body = JSON.stringify({friendId: id})
-  const method = makeFriend ? 'PATCH' : 'DELETE'
 
   dispatch(toggleFriendFetching(id))
 
-  const data = await API_friends.setFriendTo(method, body)
+  const data = await API_friends.setFriendTo(makeFriend, body)
   dispatch(toggleFriendFetching(id))
   dispatch(setFriends(data))
 }

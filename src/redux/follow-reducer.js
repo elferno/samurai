@@ -55,11 +55,10 @@ export const toggleFollowFetching = (id) => ({type: TOGGLE_FOLLOW_FETCHING, id})
 export const setFollowToAPI = (id, makeFollow) => async (dispatch) => {
 
   const body = JSON.stringify({followId: id})
-  const method = makeFollow ? 'PATCH' : 'DELETE'
 
   dispatch(toggleFollowFetching(id))
 
-  const data = await API_follow.setFollowTo(method, body)
+  const data = await API_follow.setFollowTo(makeFollow, body)
   dispatch(toggleFollowFetching(id))
   dispatch(setFollow(data))
 }

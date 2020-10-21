@@ -26,17 +26,16 @@ const request = (url, method, data, cancelToken, headers = null) => {
 // instances
 export const API_auth = {
   auth() {
-    return xml.get('auth.php')
-      .then(response => response.data)
+    return request('auth.php', 'GET')
   },
 
   login(login, pass, stay) {
-    return xml.get(`auth.php?login=${login}&pass=${pass}&stay=${stay}`)
-      .then(response => response.data)
+    const url = `auth.php?login=${login}&pass=${pass}&stay=${stay}`
+    return request(url, 'GET')
   },
 
   logout() {
-    return xml.get('auth.php?kill')
+    return request('auth.php', 'DELETE')
   }
 }
 
@@ -49,11 +48,11 @@ export const API_profile = {
   },
   cancelSetProfile(){},
 
-  saveProfile(method, data) {
+  saveProfile(data) {
     const url = 'profile.php'
     const cancelToken = createToken(f => this.cancelSaveProfile = f)
 
-    return request(url, method, data, cancelToken)
+    return request(url, 'PATCH', data, cancelToken)
   },
   cancelSaveProfile(){}
 }
@@ -71,14 +70,16 @@ export const API_users = {
 
 
 export const API_friends = {
-  setFriendTo(method, data) {
+  setFriendTo(makeFriend, data) {
+    const method = makeFriend ? 'PATCH' : 'DELETE'
     return request('friends.php', method, data, null)
   }
 }
 
 
 export const API_follow = {
-  setFollowTo(method, data) {
+  setFollowTo(makeFollow, data) {
+    const method = makeFollow ? 'PATCH' : 'DELETE'
     return request('follow.php', method, data, null)
   }
 }

@@ -69,15 +69,16 @@ class ProfileSettings extends React.Component {
           noContentFiller={null}
           clearContent={true}
         >
+
           <div className={css.buttons}>
             <button type='button' onClick={() => this.close()} className={css.button}>
               CLOSE</button>
             <button type='submit' className={css.button}>
               SAVE</button>
           </div>
-          {
-            inputs
-          }
+
+          { inputs }
+
         </PreloadContent>
       </form>,
       this.el
