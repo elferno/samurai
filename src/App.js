@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react'
 import {connect} from 'react-redux'
-import {Route} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 
 import withSuspense from 'HOC/withSuspense'
 
 import Header from './components/Header/Header'
 import NavBar from './components/NavBar/NavBar'
+import Error404 from 'components/Common/Error404/Error404'
 import UsersSearch from './components/UsersSearch/UsersSearch'
 import FriendsBarContainer from './components/FriendsBar/FriendsBarContainer'
 
@@ -53,13 +54,17 @@ const Content = ({initialized}) => {
         <UsersSearch/>
         <FriendsBarContainer/>
         <div className={css.content}>
-          <Route path='/' exact render={() => <Hello/>}/>
-          <Route path='/profile/:id?' render={withSuspense(ProfileContainer)}/>
-          <Route path='/dialogs' render={withSuspense(Dialogs)}/>
-          <Route path='/users' render={withSuspense(UsersContainer)}/>
-          <Route path='/news'/>
-          <Route path='/music'/>
-          <Route path='/settings'/>
+          <Switch>
+            <Route path='/profile/:id?' render={withSuspense(ProfileContainer)}/>
+            <Route path='/dialogs' render={withSuspense(Dialogs)}/>
+            <Route path='/users' render={withSuspense(UsersContainer)}/>
+            <Route path='/news'/>
+            <Route path='/music'/>
+            <Route path='/settings'/>
+
+            <Route path='/' exact render={() => <Hello/>}/>
+            <Route path='*' render={() => <Error404 withBox={true}/>}/>
+          </Switch>
         </div>
       </div>
     </AuthProvider>
